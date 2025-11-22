@@ -223,46 +223,8 @@ const Home = () => {
         </div>
       </section>
 
-      {/* About Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div data-aos="fade-right">
-              <h2 className="text-2xl lg:text-4xl font-bold text-gray-900 mb-6">
-                About Our{" "}
-                <span className="text-primary-600">Company</span>
-              </h2>
-              <div className="space-y-4 mb-6">
-                <p className="text-lg text-gray-700 leading-relaxed">
-                  <strong>Gedung Denko</strong> - Welcome to PT Denko Wahana Sakti. PT Denko Wahana Sakti didirikan pada Bulan November Tahun 1992. Berawal dari sebuah kantor di daerah Ketapang, Jakarta Pusat yang bergerak dalam bisnis penjualan Turbin Ventilator, Castor Wheel serta beberapa produk Material Handling.
-                </p>
-                <p className="text-lg text-gray-700 leading-relaxed">
-                  PT Denko Wahana Sakti sebagai Holding Company dari DENKO GROUP melakukan ekspansi dengan menambah bidang bisnis penjualan yang baru dan membuka cabang yang di Kota Surabaya pada Tahun 1994, kemudian di Kota Bandung pada Tahun 1997 dengan nama PT Denko Wahana Prima.
-                </p>
-              </div>
-              <Link
-                to="/about"
-                className="btn-primary inline-flex items-center space-x-2"
-              >
-                <span>Read More</span>
-                <ArrowRight size={18} />
-              </Link>
-            </div>
-            <div data-aos="fade-left">
-              <div className="w-full h-96 md:h-[600px]">
-                <img
-                  src={AboutImage}
-                  alt="About"
-                  className="w-full h-full object-contain"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-         {/* Featured Products */}
-         <section className="py-20 bg-gray-50">
+      {/* Featured Products */}
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2
@@ -339,6 +301,52 @@ const Home = () => {
         </div>
       </section>
 
+      {/* About Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div data-aos="fade-right">
+              <h2 className="text-2xl lg:text-4xl font-bold text-gray-900 mb-6">
+                About Our <span className="text-primary-600">Company</span>
+              </h2>
+              <div className="space-y-4 mb-6">
+                <p className="text-lg text-gray-700 leading-relaxed">
+                  <strong>Gedung Denko</strong> - Welcome to PT Denko Wahana
+                  Sakti. PT Denko Wahana Sakti didirikan pada Bulan November
+                  Tahun 1992. Berawal dari sebuah kantor di daerah Ketapang,
+                  Jakarta Pusat yang bergerak dalam bisnis penjualan Turbin
+                  Ventilator, Castor Wheel serta beberapa produk Material
+                  Handling.
+                </p>
+                <p className="text-lg text-gray-700 leading-relaxed">
+                  PT Denko Wahana Sakti sebagai Holding Company dari DENKO GROUP
+                  melakukan ekspansi dengan menambah bidang bisnis penjualan
+                  yang baru dan membuka cabang yang di Kota Surabaya pada Tahun
+                  1994, kemudian di Kota Bandung pada Tahun 1997 dengan nama PT
+                  Denko Wahana Prima.
+                </p>
+              </div>
+              <Link
+                to="/about"
+                className="btn-primary inline-flex items-center space-x-2"
+              >
+                <span>Read More</span>
+                <ArrowRight size={18} />
+              </Link>
+            </div>
+            <div data-aos="fade-left">
+              <div className="w-full h-96 md:h-[600px]">
+                <img
+                  src={AboutImage}
+                  alt="About"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Divisions Section */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
@@ -354,7 +362,8 @@ const Home = () => {
               data-aos="fade-up"
               data-aos-delay="200"
             >
-              Kami melayani berbagai kebutuhan industri melalui divisi-divisi terpercaya kami.
+              Kami melayani berbagai kebutuhan industri melalui divisi-divisi
+              terpercaya kami.
             </p>
           </div>
 
@@ -373,10 +382,15 @@ const Home = () => {
                   Divisi Belden
                 </h3>
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  PT Denko Wahana Sakti merupakan Distributor berbagai jenis kabel dengan brand &quot;Belden&quot; yang merupakan brand terkemuka di pasar kabel saat ini.
+                  PT Denko Wahana Sakti merupakan Distributor berbagai jenis
+                  kabel dengan brand &quot;Belden&quot; yang merupakan brand
+                  terkemuka di pasar kabel saat ini.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
-                  Kami menjual Kabel UTP Belden, rs485, rj45 dan rs232 Belden, Coaxial rg8 dan rg11, fiber optic belden, Patch Cord, Patch Panel, modular cat6 dan Face Plate dengan kantor di Jakarta, Surabaya dan Semarang.
+                  Kami menjual Kabel UTP Belden, rs485, rj45 dan rs232 Belden,
+                  Coaxial rg8 dan rg11, fiber optic belden, Patch Cord, Patch
+                  Panel, modular cat6 dan Face Plate dengan kantor di Jakarta,
+                  Surabaya dan Semarang.
                 </p>
               </div>
             </div>
@@ -395,7 +409,17 @@ const Home = () => {
                   Divisi Material Handling
                 </h3>
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  Kami juga menjual berbagai produk material handling seperti Hand Pallet Truck, Manual stacker, full electric stacker, electric pallet truck, aluminium work platform, drum porter, hand truck prestar, drum handler, drum tipper, drum gripper, trolly 3 susun, hand truck, pallet truck with scale, mini forklift, vertical lift, Hand truck, scissor lift, hand stacker full electric, hand stacker manual, hand drum lift, hand drum lift semi electric, lift table, trolly, tangga elektrik, turbine ventilator, semi electric stacker, hand pallet, tangga electric, turbin ventilator, trolly, hand stacker semi electric, forklift, pallet mesh, dan hand pallet.
+                  Kami juga menjual berbagai produk material handling seperti
+                  Hand Pallet Truck, Manual stacker, full electric stacker,
+                  electric pallet truck, aluminium work platform, drum porter,
+                  hand truck prestar, drum handler, drum tipper, drum gripper,
+                  trolly 3 susun, hand truck, pallet truck with scale, mini
+                  forklift, vertical lift, Hand truck, scissor lift, hand
+                  stacker full electric, hand stacker manual, hand drum lift,
+                  hand drum lift semi electric, lift table, trolly, tangga
+                  elektrik, turbine ventilator, semi electric stacker, hand
+                  pallet, tangga electric, turbin ventilator, trolly, hand
+                  stacker semi electric, forklift, pallet mesh, dan hand pallet.
                 </p>
               </div>
             </div>
@@ -414,7 +438,11 @@ const Home = () => {
                   Divisi Dalton Tools
                 </h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Kami adalah distributor hand tool, Ladder, jack equipment, dust bin, mesin las igbt, genset tiger, kunci pas, welding machine, tang, mesin las inverter, kunci ring, mesin las, dongkrak botol, water pump, generator, genset, tong sampah, dongkrak buaya dan tangga.
+                  Kami adalah distributor hand tool, Ladder, jack equipment,
+                  dust bin, mesin las igbt, genset tiger, kunci pas, welding
+                  machine, tang, mesin las inverter, kunci ring, mesin las,
+                  dongkrak botol, water pump, generator, genset, tong sampah,
+                  dongkrak buaya dan tangga.
                 </p>
               </div>
             </div>
@@ -422,12 +450,13 @@ const Home = () => {
         </div>
       </section>
 
-  
-
       {/* CTA Section */}
       <section className="py-20 bg-primary-600 text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl lg:text-4xl font-bold mb-6" data-aos="fade-up">
+          <h2
+            className="text-2xl lg:text-4xl font-bold mb-6"
+            data-aos="fade-up"
+          >
             Siap untuk Memulai Proyek Anda?
           </h2>
           <p
