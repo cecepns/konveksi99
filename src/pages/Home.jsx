@@ -224,7 +224,7 @@ const Home = () => {
       </section>
 
       {/* Featured Products */}
-      <section className="py-20 bg-gray-50">
+      <section className="bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2
