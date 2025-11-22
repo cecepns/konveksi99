@@ -113,7 +113,7 @@ const Home = () => {
                       <div className="max-w-4xl">
                         {!!banner.title && (
                           <h1
-                            className="text-4xl lg:text-6xl font-bold mb-6 leading-tight text-white"
+                            className="text-2xl lg:text-6xl font-bold mb-6 leading-tight text-white"
                             data-aos="fade-up"
                           >
                             {banner.title || "Solusi Industri"}{" "}
@@ -159,7 +159,7 @@ const Home = () => {
             <div className="relative container mx-auto px-4 h-full flex items-center">
               <div className="max-w-4xl">
                 <h1
-                  className="text-4xl lg:text-6xl font-bold mb-6 leading-tight"
+                  className="text-2xl lg:text-6xl font-bold mb-6 leading-tight"
                   data-aos="fade-up"
                 >
                   Solusi Industri{" "}
@@ -213,7 +213,7 @@ const Home = () => {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 text-primary-600 rounded-full mb-4">
                   <stat.icon size={32} />
                 </div>
-                <div className="text-3xl font-bold text-gray-900 mb-2">
+                <div className="text-xl md:text-3xl font-bold text-gray-900 mb-2">
                   {stat.value}
                 </div>
                 <div className="text-gray-600">{stat.label}</div>
@@ -228,7 +228,7 @@ const Home = () => {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div data-aos="fade-right">
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">
+              <h2 className="text-2xl lg:text-4xl font-bold text-gray-900 mb-6">
                 About Our{" "}
                 <span className="text-primary-600">Company</span>
               </h2>
@@ -261,95 +261,12 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Divisions Section */}
-      <section className="py-20 bg-gray-50">
+         {/* Featured Products */}
+         <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2
-              className="text-4xl font-bold text-gray-900 mb-4"
-              data-aos="fade-up"
-            >
-              Our <span className="text-primary-600">Divisions</span>
-            </h2>
-            <p
-              className="text-xl text-gray-600 max-w-3xl mx-auto"
-              data-aos="fade-up"
-              data-aos-delay="200"
-            >
-              Kami melayani berbagai kebutuhan industri melalui divisi-divisi terpercaya kami.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Divisi Belden */}
-            <div
-              className="card hover:shadow-xl transition-all duration-300"
-              data-aos="fade-up"
-              data-aos-delay="0"
-            >
-              <div className="p-6">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 text-primary-600 rounded-full mb-4">
-                  <Zap size={32} />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  Divisi Belden
-                </h3>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  PT Denko Wahana Sakti merupakan Distributor berbagai jenis kabel dengan brand &quot;Belden&quot; yang merupakan brand terkemuka di pasar kabel saat ini.
-                </p>
-                <p className="text-gray-700 leading-relaxed">
-                  Kami menjual Kabel UTP Belden, rs485, rj45 dan rs232 Belden, Coaxial rg8 dan rg11, fiber optic belden, Patch Cord, Patch Panel, modular cat6 dan Face Plate dengan kantor di Jakarta, Surabaya dan Semarang.
-                </p>
-              </div>
-            </div>
-
-            {/* Divisi Material Handling */}
-            <div
-              className="card hover:shadow-xl transition-all duration-300"
-              data-aos="fade-up"
-              data-aos-delay="200"
-            >
-              <div className="p-6">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-secondary-100 text-secondary-600 rounded-full mb-4">
-                  <Award size={32} />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  Divisi Material Handling
-                </h3>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  Kami juga menjual berbagai produk material handling seperti Hand Pallet Truck, Manual stacker, full electric stacker, electric pallet truck, aluminium work platform, drum porter, hand truck prestar, drum handler, drum tipper, drum gripper, trolly 3 susun, hand truck, pallet truck with scale, mini forklift, vertical lift, Hand truck, scissor lift, hand stacker full electric, hand stacker manual, hand drum lift, hand drum lift semi electric, lift table, trolly, tangga elektrik, turbine ventilator, semi electric stacker, hand pallet, tangga electric, turbin ventilator, trolly, hand stacker semi electric, forklift, pallet mesh, dan hand pallet.
-                </p>
-              </div>
-            </div>
-
-            {/* Divisi Dalton Tools */}
-            <div
-              className="card hover:shadow-xl transition-all duration-300"
-              data-aos="fade-up"
-              data-aos-delay="400"
-            >
-              <div className="p-6">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 text-blue-600 rounded-full mb-4">
-                  <Users size={32} />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  Divisi Dalton Tools
-                </h3>
-                <p className="text-gray-700 leading-relaxed">
-                  Kami adalah distributor hand tool, Ladder, jack equipment, dust bin, mesin las igbt, genset tiger, kunci pas, welding machine, tang, mesin las inverter, kunci ring, mesin las, dongkrak botol, water pump, generator, genset, tong sampah, dongkrak buaya dan tangga.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Products */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2
-              className="text-4xl font-bold text-gray-900 mb-4"
+              className="text-2xl lg:text-4xl font-bold text-gray-900 mb-4"
               data-aos="fade-up"
             >
               Produk <span className="text-primary-600">Unggulan</span>
@@ -365,7 +282,7 @@ const Home = () => {
           </div>
 
           {!loading && (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-8">
               {featuredProducts.map((product, index) => (
                 <div
                   key={product.id}
@@ -385,10 +302,10 @@ const Home = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </div>
                   <div className="p-6">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors">
+                    <h3 className="md:text-xl font-semibold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors line-clamp-2">
                       {product.title}
                     </h3>
-                    <p className="text-gray-600 mb-4 line-clamp-3">
+                    <p className="text-xs md:text-base text-gray-600 mb-4 line-clamp-3">
                       {product.description
                         ?.replace(/<[^>]*>/g, "")
                         .slice(0, 120)}
@@ -396,7 +313,7 @@ const Home = () => {
                     </p>
                     <Link
                       to={`/products/${product.slug}`}
-                      className="text-primary-600 hover:text-primary-700 font-medium inline-flex items-center space-x-2 group"
+                      className="text-xs md:text-base text-primary-600 hover:text-primary-700 font-medium inline-flex items-center space-x-2 group"
                     >
                       <span>Lihat Detail</span>
                       <ArrowRight
@@ -422,10 +339,95 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Divisions Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2
+              className="text-2xl lg:text-4xl font-bold text-gray-900 mb-4"
+              data-aos="fade-up"
+            >
+              Our <span className="text-primary-600">Divisions</span>
+            </h2>
+            <p
+              className="text-xl text-gray-600 max-w-3xl mx-auto"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              Kami melayani berbagai kebutuhan industri melalui divisi-divisi terpercaya kami.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Divisi Belden */}
+            <div
+              className="card hover:shadow-xl transition-all duration-300"
+              data-aos="fade-up"
+              data-aos-delay="0"
+            >
+              <div className="p-6">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 text-primary-600 rounded-full mb-4">
+                  <Zap size={32} />
+                </div>
+                <h3 className="text-lg md:text-2xl font-bold text-gray-900 mb-4">
+                  Divisi Belden
+                </h3>
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  PT Denko Wahana Sakti merupakan Distributor berbagai jenis kabel dengan brand &quot;Belden&quot; yang merupakan brand terkemuka di pasar kabel saat ini.
+                </p>
+                <p className="text-gray-700 leading-relaxed">
+                  Kami menjual Kabel UTP Belden, rs485, rj45 dan rs232 Belden, Coaxial rg8 dan rg11, fiber optic belden, Patch Cord, Patch Panel, modular cat6 dan Face Plate dengan kantor di Jakarta, Surabaya dan Semarang.
+                </p>
+              </div>
+            </div>
+
+            {/* Divisi Material Handling */}
+            <div
+              className="card hover:shadow-xl transition-all duration-300"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              <div className="p-6">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-secondary-100 text-secondary-600 rounded-full mb-4">
+                  <Award size={32} />
+                </div>
+                <h3 className="text-lg md:text-2xl font-bold text-gray-900 mb-4">
+                  Divisi Material Handling
+                </h3>
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  Kami juga menjual berbagai produk material handling seperti Hand Pallet Truck, Manual stacker, full electric stacker, electric pallet truck, aluminium work platform, drum porter, hand truck prestar, drum handler, drum tipper, drum gripper, trolly 3 susun, hand truck, pallet truck with scale, mini forklift, vertical lift, Hand truck, scissor lift, hand stacker full electric, hand stacker manual, hand drum lift, hand drum lift semi electric, lift table, trolly, tangga elektrik, turbine ventilator, semi electric stacker, hand pallet, tangga electric, turbin ventilator, trolly, hand stacker semi electric, forklift, pallet mesh, dan hand pallet.
+                </p>
+              </div>
+            </div>
+
+            {/* Divisi Dalton Tools */}
+            <div
+              className="card hover:shadow-xl transition-all duration-300"
+              data-aos="fade-up"
+              data-aos-delay="400"
+            >
+              <div className="p-6">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 text-blue-600 rounded-full mb-4">
+                  <Users size={32} />
+                </div>
+                <h3 className="text-lg md:text-2xl font-bold text-gray-900 mb-4">
+                  Divisi Dalton Tools
+                </h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Kami adalah distributor hand tool, Ladder, jack equipment, dust bin, mesin las igbt, genset tiger, kunci pas, welding machine, tang, mesin las inverter, kunci ring, mesin las, dongkrak botol, water pump, generator, genset, tong sampah, dongkrak buaya dan tangga.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+  
+
       {/* CTA Section */}
       <section className="py-20 bg-primary-600 text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-6" data-aos="fade-up">
+          <h2 className="text-2xl lg:text-4xl font-bold mb-6" data-aos="fade-up">
             Siap untuk Memulai Proyek Anda?
           </h2>
           <p

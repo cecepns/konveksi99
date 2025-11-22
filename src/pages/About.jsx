@@ -56,7 +56,7 @@ const About = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl">
             <h1
-              className="text-4xl lg:text-6xl font-bold mb-6"
+              className="text-2xl lg:text-6xl font-bold mb-6"
               data-aos="fade-up"
             >
               Tentang <span className="text-secondary-400">Kami</span>
@@ -79,7 +79,7 @@ const About = () => {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div data-aos="fade-right">
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">
+              <h2 className="text-2xl lg:text-4xl font-bold text-gray-900 mb-6">
                 PT. Denko Wahana Sakti
               </h2>
               <p className="text-lg text-gray-600 mb-6 leading-relaxed">
@@ -167,7 +167,7 @@ const About = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2
-              className="text-4xl font-bold text-gray-900 mb-4"
+              className="text-2xl lg:text-4xl font-bold text-gray-900 mb-4"
               data-aos="fade-up"
             >
               Nilai-Nilai <span className="text-primary-600">Perusahaan</span>
@@ -208,7 +208,7 @@ const About = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2
-              className="text-4xl font-bold text-gray-900 mb-4"
+              className="text-2xl lg:text-4xl font-bold text-gray-900 mb-4"
               data-aos="fade-up"
             >
               Perjalanan <span className="text-primary-600">Kami</span>

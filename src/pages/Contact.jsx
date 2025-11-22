@@ -142,7 +142,7 @@ const Contact = () => {
         <div className="container mx-auto px-4">
           <div className="text-center">
             <h1 
-              className="text-4xl lg:text-6xl font-bold mb-6"
+              className="text-2xl lg:text-6xl font-bold mb-6"
               data-aos="fade-up"
             >
               Hubungi <span className="text-secondary-400">Kami</span>
@@ -208,7 +208,7 @@ const Contact = () => {
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Form */}
             <div data-aos="fade-right">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">
+              <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-6">
                 Kirim <span className="text-primary-600">Pesan</span>
               </h2>
               <p className="text-gray-600 mb-8">
@@ -331,7 +331,7 @@ const Contact = () => {
 
             {/* Map */}
             <div data-aos="fade-left">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">
+              <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-6">
                 Lokasi <span className="text-primary-600">Kami</span>
               </h2>
               <p className="text-gray-600 mb-6">

@@ -64,3 +64,4 @@ INSERT INTO subcategories (category_id, name, slug, description, status) VALUES
 ((SELECT id FROM categories WHERE slug = 'cnc-machines'), 'CNC Turning', 'cnc-turning', 'CNC turning machines', 'active');
 
 
+

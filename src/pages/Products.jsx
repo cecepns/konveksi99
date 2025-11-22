@@ -120,7 +120,7 @@ const Products = () => {
         <div className="container mx-auto px-4">
           <div className="text-center">
             <h1 
-              className="text-4xl lg:text-6xl font-bold mb-6"
+              className="text-2xl lg:text-6xl font-bold mb-6"
               data-aos="fade-up"
             >
               Produk <span className="text-secondary-400">Kami</span>
