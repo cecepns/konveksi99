@@ -9,7 +9,7 @@ import {
   Calendar,
   Eye
 } from 'lucide-react';
-import { productsAPI, bannersAPI } from '../../utils/api';
+import { productsAPI, bannersAPI, getImageUrl } from '../../utils/api';
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
@@ -134,12 +134,12 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="p-6">
-          {stats.recentProducts.length > 0 ? (
+              {stats.recentProducts.length > 0 ? (
             <div className="space-y-4">
               {stats.recentProducts.map((product) => (
                 <div key={product.id} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
                   <img 
-                    src={product.image || 'https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg'} 
+                    src={getImageUrl(product.image) || 'https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg'} 
                     alt={product.title}
                     className="w-16 h-16 object-cover rounded-lg"
                   />

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import AOS from 'aos';
-import { Save, Building, MapPin, Phone, Mail, Globe, Info, Clock } from 'lucide-react';
-import { settingsAPI } from '../../utils/api';
+import { Save, Building, MapPin, Phone, Mail, Globe, Info, Clock, Target, Image as ImageIcon } from 'lucide-react';
+import { settingsAPI, uploadAPI, getImageUrl } from '../../utils/api';
 
 const Settings = () => {
   const [settings, setSettings] = useState({
@@ -11,10 +11,18 @@ const Settings = () => {
     company_email: '',
     company_about: '',
     company_working_hours: '',
-    google_maps_embed: ''
+    google_maps_embed: '',
+    home_about_title: '',
+    home_about_description: '',
+    home_about_image: '',
+    company_history: '',
+    company_vision: '',
+    company_mission: '',
+    facebook_pixel_id: ''
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadingAboutImage, setUploadingAboutImage] = useState(false);
 
   useEffect(() => {
     AOS.init({ duration: 1000 });
@@ -38,6 +46,32 @@ const Settings = () => {
       ...settings,
       [e.target.name]: e.target.value
     });
+  };
+
+  const handleAboutImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setUploadingAboutImage(true);
+    try {
+      const response = await uploadAPI.uploadImage(file);
+      const imageUrl = response.data?.data?.url || response.data?.url;
+
+      if (!imageUrl) {
+        alert('Error: No image URL received from server');
+        return;
+      }
+
+      setSettings(prev => ({
+        ...prev,
+        home_about_image: imageUrl
+      }));
+    } catch (error) {
+      console.error('Error uploading about image:', error);
+      alert('Error uploading image');
+    } finally {
+      setUploadingAboutImage(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -198,7 +232,176 @@ const Settings = () => {
               This will be displayed on the About page and other sections of your website.
             </p>
           </div>
+
+        <div className="mt-6">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Company History (About Page)
+          </label>
+          <textarea
+            name="company_history"
+            rows={6}
+            value={settings.company_history || ''}
+            onChange={handleInputChange}
+            className="input-field resize-none"
+            placeholder={
+              "Belarise Clothing lahir dari kecintaan pada gaya feminin dan detail manis. Kami menghadirkan koleksi ready to wear bertema coquette outfit yang dirancang untuk membuat pemakainya merasa percaya diri di setiap momen.\n\n" +
+              "Setiap koleksi Belarise diproduksi dengan material pilihan yang lembut dan nyaman dipakai seharian, dengan cutting yang flattering untuk berbagai bentuk tubuh.\n\n" +
+              "Belarise menerima pembelian ecer maupun grosir untuk reseller dan butik, dengan komitmen menjaga kualitas, konsistensi warna, dan kerapian jahitan di setiap piece."
+            }
+          />
+          <p className="text-sm text-gray-500 mt-2">
+            This text is shown in the Company History section on the About page. Use blank lines to separate paragraphs.
+          </p>
         </div>
+        </div>
+
+      {/* Home About Section */}
+      <div className="bg-white rounded-lg shadow-md p-6" data-aos="fade-up">
+        <div className="flex items-center mb-6">
+          <ImageIcon className="text-primary-600 mr-3" size={24} />
+          <h2 className="text-lg font-semibold text-gray-900">Home About Section</h2>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Home About Title
+              </label>
+              <input
+                type="text"
+                name="home_about_title"
+                value={settings.home_about_title || ''}
+                onChange={handleInputChange}
+                className="input-field"
+                placeholder="Belarise Collection"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Home About Description
+              </label>
+              <textarea
+                name="home_about_description"
+                rows={6}
+                value={settings.home_about_description || ''}
+                onChange={handleInputChange}
+                className="input-field resize-none"
+                placeholder="Belarise Clothing menghadirkan koleksi pakaian ready to wear bertema Coquette Outfit, dengan material berkualitas dan nyaman digunakan. Menerima pembelian ecer dan grosir."
+              />
+              <p className="text-sm text-gray-500 mt-2">
+                This text will replace the default description on the Home page About section.
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Home About Image
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleAboutImageUpload}
+              className="input-field"
+              disabled={uploadingAboutImage}
+            />
+            {uploadingAboutImage && (
+              <div className="flex items-center space-x-2 text-primary-600 text-sm">
+                <div className="w-4 h-4 border-2 border-primary-600 border-t-transparent rounded-full animate-spin"></div>
+                <span>Uploading image...</span>
+              </div>
+            )}
+            {settings.home_about_image && (
+              <div className="mt-2">
+                <p className="text-sm font-medium text-gray-700 mb-2">Preview:</p>
+                <img
+                  src={getImageUrl(settings.home_about_image)}
+                  alt="Home About"
+                  className="w-full h-48 object-cover rounded-lg border border-primary-100"
+                />
+              </div>
+            )}
+            <p className="text-sm text-gray-500">
+              When you upload a new image, the previous one will be removed from the server automatically.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Vision & Mission */}
+      <div className="bg-white rounded-lg shadow-md p-6" data-aos="fade-up">
+        <div className="flex items-center mb-6">
+          <Target className="text-primary-600 mr-3" size={24} />
+          <h2 className="text-lg font-semibold text-gray-900">Vision & Mission</h2>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Company Vision
+            </label>
+            <textarea
+              name="company_vision"
+              rows={5}
+              value={settings.company_vision || ''}
+              onChange={handleInputChange}
+              className="input-field resize-none"
+              placeholder={
+                "Menjadi brand fashion lokal yang menghadirkan koleksi coquette outfit yang manis, elegan, dan mudah dipadupadankan untuk perempuan Indonesia.\n\n" +
+                "Belarise ingin menjadi pilihan utama untuk tampilan feminin yang nyaman dan percaya diri di setiap kesempatan."
+              }
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Company Mission
+            </label>
+            <textarea
+              name="company_mission"
+              rows={5}
+              value={settings.company_mission || ''}
+              onChange={handleInputChange}
+              className="input-field resize-none"
+              placeholder={
+                "- Menghadirkan pakaian ready to wear berbahan lembut dan nyaman dipakai seharian.\n" +
+                "- Menyediakan cutting yang flattering dan ramah berbagai bentuk tubuh.\n" +
+                "- Mendukung reseller dan butik melalui layanan grosir yang rapi dan konsisten.\n" +
+                "- Menjaga kualitas detail, warna, dan jahitan di setiap koleksi Belarise."
+              }
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Marketing & Tracking */}
+      <div className="bg-white rounded-lg shadow-md p-6" data-aos="fade-up">
+        <div className="flex items-center mb-6">
+          <Target className="text-primary-600 mr-3" size={24} />
+          <h2 className="text-lg font-semibold text-gray-900">Marketing & Tracking</h2>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Facebook Pixel ID
+            </label>
+            <input
+              type="text"
+              name="facebook_pixel_id"
+              value={settings.facebook_pixel_id || ''}
+              onChange={handleInputChange}
+              className="input-field"
+              placeholder="Misal: 123456789012345"
+            />
+            <p className="text-sm text-gray-500 mt-2">
+              Masukkan ID Pixel Facebook (bukan seluruh script). Pixel akan diinisialisasi otomatis di website publik.
+            </p>
+          </div>
+        </div>
+      </div>
 
         {/* Maps Integration */}
         <div className="bg-white rounded-lg shadow-md p-6" data-aos="fade-up">

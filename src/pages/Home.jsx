@@ -9,9 +9,9 @@ import {
   Award,
   Zap,
 } from "lucide-react";
-import { bannersAPI, productsAPI } from "../utils/api";
+import { bannersAPI, productsAPI, settingsAPI, getImageUrl } from "../utils/api";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, Navigation, EffectFade } from "swiper/modules";
+import { Autoplay, Pagination, Navigation, EffectFlip } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -22,6 +22,7 @@ const Home = () => {
   const [banners, setBanners] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [settings, setSettings] = useState({});
 
   useEffect(() => {
     AOS.init({ duration: 1000 });
@@ -30,14 +31,16 @@ const Home = () => {
 
     const fetchData = async () => {
       try {
-        const [bannersRes, productsRes] = await Promise.all([
+        const [bannersRes, productsRes, settingsRes] = await Promise.all([
           bannersAPI.getAll(),
           productsAPI.getAll(1, 6),
+          settingsAPI.get(),
         ]);
 
         if (isMounted) {
           setBanners(bannersRes.data.data || []);
           setFeaturedProducts(productsRes.data.data || []);
+          setSettings(settingsRes.data.data || {});
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -62,22 +65,29 @@ const Home = () => {
     { icon: CheckCircle, label: "Success Rate", value: "99%" },
   ];
 
+  const homeAboutTitle =
+    settings.home_about_title || "Belarise Collection";
+  const homeAboutDescription =
+    settings.home_about_description ||
+    "Belarise Clothing menghadirkan koleksi pakaian ready to wear bertema Coquette Outfit, terbuat dari material berkualitas serta nyaman digunakan. Menerima pembelian ecer dan grosir.";
+  const homeAboutImage = settings.home_about_image;
+
   return (
     <>
       <SEO
-        title="Home"
-        description="PT. Denko Wahana Sakti - Solusi industri terpercaya untuk kebutuhan perusahaan Anda dengan kualitas dan pelayanan terbaik."
+        title="Belarise Collection - Coquette Outfit"
+        description="Belarise Clothing menghadirkan koleksi pakaian ready to wear bertema Coquette Outfit dengan material berkualitas, nyaman dipakai, untuk pembelian ecer dan grosir."
       />
 
       {/* Hero Banner Section */}
-      <section className="relative h-44 lg:h-[680px] bg-primary-600 overflow-hidden">
+      <section className="relative h-44 lg:h-[550px] overflow-hidden">
         {loading ? (
           <div className="w-full h-full bg-primary-600 flex items-center justify-center">
             <div className="text-white text-xl">Memuat banner...</div>
           </div>
         ) : banners && banners.length > 0 ? (
           <Swiper
-            modules={[Autoplay, Pagination, Navigation, EffectFade]}
+            modules={[Autoplay, Pagination, Navigation, EffectFlip]}
             spaceBetween={0}
             slidesPerView={1}
             loop={true}
@@ -101,11 +111,11 @@ const Home = () => {
                 <div className="relative w-full h-full">
                   <img
                     src={
-                      banner.image ||
+                      getImageUrl(banner.image) ||
                       "https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg"
                     }
                     alt={banner.title || "Banner"}
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-cover"
                   />
                   {/* <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/40"></div> */}
                   <div className="absolute inset-0 flex items-center">
@@ -154,7 +164,7 @@ const Home = () => {
             ))}
           </Swiper>
         ) : (
-          <div className="relative bg-primary-600 text-white overflow-hidden h-full">
+          <div className="relative bg-gradient-to-r from-primary-500 to-secondary-400 text-white overflow-hidden h-full">
             <div className="absolute inset-0 bg-black opacity-20"></div>
             <div className="relative container mx-auto px-4 h-full flex items-center">
               <div className="max-w-4xl">
@@ -200,7 +210,7 @@ const Home = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-primary-50">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
@@ -224,7 +234,7 @@ const Home = () => {
       </section>
 
       {/* Featured Products */}
-      <section className="pb-10 bg-gray-50">
+      <section className="bg-white py-14">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2
@@ -254,10 +264,10 @@ const Home = () => {
                 >
                   <div className="relative overflow-hidden">
                     <img
-                      src={
-                        product.image ||
-                        "https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg"
-                      }
+                    src={
+                      getImageUrl(product.image) ||
+                      "https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg"
+                    }
                       alt={product.title}
                       className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                     />
@@ -307,21 +317,14 @@ const Home = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div data-aos="fade-right">
               <h2 className="text-2xl lg:text-4xl font-bold text-gray-900 mb-6">
-                About Our <span className="text-primary-600">Company</span>
+                {homeAboutTitle.split(" ").slice(0, -1).join(" ") || homeAboutTitle}{" "}
+                <span className="text-primary-600">
+                  {homeAboutTitle.split(" ").slice(-1)[0] || ""}
+                </span>
               </h2>
               <div className="space-y-4 mb-6">
-                <p className="text-lg text-gray-700 leading-relaxed">
-                  <strong>Gedung Denko</strong> - Welcome to PT Denko Wahana
-                  Sakti. PT Denko Wahana Sakti didirikan pada Bulan November
-                  Tahun 1992. Berawal dari sebuah kantor di daerah Ketapang,
-                  Jakarta Pusat yang bergerak dalam bisnis penjualan Turbin
-                  Ventilator, Castor Wheel serta beberapa produk Material
-                  Handling.
-                </p>
-                <p className="text-lg text-gray-700 leading-relaxed">
-                  PT Denko Wahana Sakti sebagai Holding Company dari DENKO GROUP
-                  melakukan ekspansi dengan menambah bidang bisnis penjualan
-                  yang baru dan membuka cabang di Bandung, Surabaya, Semarang, dan Warehouse di Tangerang.
+                <p className="text-lg text-gray-700 leading-relaxed whitespace-pre-line">
+                  {homeAboutDescription}
                 </p>
               </div>
               <Link
@@ -335,9 +338,9 @@ const Home = () => {
             <div data-aos="fade-left">
               <div className="w-full h-96 md:h-[600px]">
                 <img
-                  src={AboutImage}
-                  alt="About"
-                  className="w-full h-full object-contain"
+                  src={getImageUrl(homeAboutImage) || AboutImage}
+                  alt="About Belarise"
+                  className="w-full h-full object-cover rounded-2xl shadow-md"
                 />
               </div>
             </div>
@@ -446,21 +449,21 @@ const Home = () => {
       </section> */}
 
       {/* CTA Section */}
-      <section className="py-20 bg-primary-600 text-white">
+      <section className="py-20 bg-gradient-to-r from-primary-500 to-secondary-400 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2
             className="text-2xl lg:text-4xl font-bold mb-6"
             data-aos="fade-up"
           >
-            Siap untuk Memulai Proyek Anda?
+            Siap Tampil Manis dengan Belarise?
           </h2>
           <p
             className="text-xl mb-8 max-w-2xl mx-auto text-primary-100"
             data-aos="fade-up"
             data-aos-delay="200"
           >
-            Hubungi tim ahli kami sekarang untuk konsultasi gratis dan dapatkan
-            solusi terbaik untuk kebutuhan industri Anda.
+            Jelajahi koleksi coquette outfit Belarise Collection dan temukan gaya favoritmu. 
+            Tersedia pembelian ecer maupun grosir, siap kirim ke seluruh Indonesia.
           </p>
           <div
             className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4"
@@ -476,7 +479,7 @@ const Home = () => {
             </Link>
             <Link
               to="/products"
-              className="btn-outline border-white text-white hover:bg-white hover:text-primary-600 inline-flex items-center justify-center px-8 py-4 text-lg"
+              className="btn-outline !text-primary-600 border-white text-white hover:bg-white hover:text-primary-600 inline-flex items-center justify-center px-8 py-4 text-lg"
             >
               Jelajahi Produk
             </Link>

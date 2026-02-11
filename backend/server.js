@@ -573,22 +573,62 @@ app.put('/api/settings', authenticateToken, (req, res) => {
       return res.status(400).json({ success: false, message: 'Settings data required' });
     }
 
-    const queries = Object.entries(settings).map(([key, value]) => {
+    // First, load existing settings so we can clean up old assets (e.g. images)
+    const getExistingSettings = () => {
       return new Promise((resolve, reject) => {
-        const query = `
+        const query = 'SELECT setting_key, setting_value FROM settings';
+        db.query(query, (err, results) => {
+          if (err) return reject(err);
+
+          const existing = {};
+          results.forEach(row => {
+            existing[row.setting_key] = row.setting_value;
+          });
+
+          resolve(existing);
+        });
+      });
+    };
+
+    getExistingSettings()
+      .then((existingSettings) => {
+        const queries = Object.entries(settings).map(([key, value]) => {
+          return new Promise((resolve, reject) => {
+            const query = `
           INSERT INTO settings (setting_key, setting_value) 
           VALUES (?, ?) 
           ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value), updated_at = CURRENT_TIMESTAMP
         `;
-        
-        db.query(query, [key, value], (err, result) => {
-          if (err) reject(err);
-          else resolve(result);
-        });
-      });
-    });
+            
+            db.query(query, [key, value], (err, result) => {
+              if (err) return reject(err);
 
-    Promise.all(queries)
+              // If this setting stores an image path and it changed, try to delete the old file
+              if (key.endsWith('_image')) {
+                const oldValue = existingSettings[key];
+                if (oldValue && oldValue !== value) {
+                  try {
+                    // oldValue is stored like "/uploads/filename.jpg" or "uploads/filename.jpg"
+                    const relativePath = oldValue.replace(/^\/+uploads\/?/, '').replace(/^uploads\/?/, '');
+                    const oldFilePath = path.join(uploadsDir, relativePath);
+                    fs.unlink(oldFilePath, (unlinkErr) => {
+                      if (unlinkErr && unlinkErr.code !== 'ENOENT') {
+                        console.error('Error deleting old settings image:', unlinkErr);
+                      }
+                    });
+                  } catch (cleanupErr) {
+                    console.error('Error while cleaning up old settings image:', cleanupErr);
+                  }
+                }
+              }
+
+              resolve(result);
+            });
+          });
+        });
+
+        return Promise.all(queries);
+      })
       .then(() => {
         res.json({
           success: true,
@@ -596,9 +636,11 @@ app.put('/api/settings', authenticateToken, (req, res) => {
         });
       })
       .catch((err) => {
+        console.error('Error updating settings:', err);
         res.status(500).json({ success: false, message: 'Database error' });
       });
   } catch (error) {
+    console.error('Server error in /api/settings:', error);
     res.status(500).json({ success: false, message: 'Server error' });
   }
 });
@@ -619,8 +661,7 @@ app.post('/api/upload/image', authenticateToken, upload.single('image'), (req, r
       message: 'Image uploaded successfully',
       data: {
         filename: req.file.filename,
-        url: imageUrl,
-        fullUrl: `https://api-inventory.isavralabel.com/denko/${imageUrl}`
+        url: imageUrl
       }
     });
   } catch (error) {

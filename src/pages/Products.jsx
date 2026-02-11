@@ -5,7 +5,7 @@ import SEO from '../components/Common/SEO';
 import Loading from '../components/Common/Loading';
 import Pagination from '../components/Common/Pagination';
 import { Search, ListFilter as Filter, X } from 'lucide-react';
-import { productsAPI, categoriesAPI } from '../utils/api';
+import { productsAPI, categoriesAPI, getImageUrl } from '../utils/api';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -110,9 +110,9 @@ const Products = () => {
   return (
     <>
       <SEO 
-        title="Products"
-        description="Jelajahi berbagai produk industri berkualitas tinggi dari PT. Denko Wahana Sakti. Solusi terpercaya untuk kebutuhan industri Anda."
-        keywords="produk industri, peralatan industri, manufaktur, solusi industri"
+        title="Koleksi Belarise"
+        description="Temukan koleksi coquette outfit Belarise Clothing: dress, blouse, skirt, dan set outfit ready to wear yang manis dan nyaman untuk aktivitas sehari-hari maupun acara spesial."
+        keywords="belarise collection, koleksi pakaian wanita, coquette outfit, dress, blouse, skirt, set outfit, fashion lokal"
       />
 
       {/* Hero Section */}
@@ -123,15 +123,14 @@ const Products = () => {
               className="text-2xl lg:text-6xl font-bold mb-6"
               data-aos="fade-up"
             >
-              Produk <span className="text-secondary-400">Kami</span>
+              Koleksi <span className="text-secondary-400">Belarise</span>
             </h1>
             <p 
               className="text-xl lg:text-2xl text-gray-200 max-w-4xl mx-auto"
               data-aos="fade-up" 
               data-aos-delay="200"
             >
-              Temukan berbagai solusi industri berkualitas tinggi yang telah dipercaya 
-              oleh ratusan perusahaan di seluruh Indonesia.
+              Jelajahi berbagai koleksi pakaian Belarise: dari dress, blouse, hingga set outfit bertema coquette yang siap melengkapi gaya feminim dan manis kamu, baik untuk ecer maupun grosir.
             </p>
           </div>
         </div>
@@ -244,7 +243,7 @@ const Products = () => {
                   >
                     <div className="relative overflow-hidden">
                       <img 
-                        src={product.image || 'https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg'} 
+                        src={getImageUrl(product.image) || 'https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg'} 
                         alt={product.title}
                         className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                       />

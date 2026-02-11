@@ -65,3 +65,4 @@ INSERT INTO subcategories (category_id, name, slug, description, status) VALUES
 
 
 
+

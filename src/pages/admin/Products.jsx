@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import ReactQuill from 'react-quill';
 import AOS from 'aos';
-import { Plus, CreditCard as Edit, Trash2, Search, Eye, X, Save } from 'lucide-react';
-import { productsAPI, uploadAPI, categoriesAPI } from '../../utils/api';
+import { Plus, PencilIcon as Edit, Trash2, Search, Eye, X, Save } from 'lucide-react';
+import { productsAPI, uploadAPI, categoriesAPI, getImageUrl } from '../../utils/api';
 import Pagination from '../../components/Common/Pagination';
 import 'react-quill/dist/quill.snow.css';
 
@@ -166,8 +166,8 @@ const Products = () => {
     setUploading(true);
     try {
       const response = await uploadAPI.uploadImage(file);
-      // Response structure: { success: true, data: { fullUrl: ..., url: ... } }
-      const imageUrl = response.data.data?.fullUrl || response.data.data?.url || response.data.fullUrl || response.data.url;
+      // Backend now returns relative url (e.g. "/uploads/xxx.jpg")
+      const imageUrl = response.data.data?.url || response.data.url;
       
       if (!imageUrl) {
         console.error('No image URL in response:', response.data);
@@ -356,7 +356,7 @@ const Products = () => {
                       <td className="px-6 py-4">
                         <div className="flex items-center">
                           <img 
-                            src={product.image || 'https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg'} 
+                            src={getImageUrl(product.image) || 'https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg'} 
                             alt={product.title}
                             className="w-12 h-12 object-cover rounded-lg mr-4"
                           />
@@ -539,7 +539,7 @@ const Products = () => {
                   )}
                   {formData.image && (
                     <img 
-                      src={formData.image} 
+                      src={getImageUrl(formData.image)} 
                       alt="Preview"
                       className="w-32 h-32 object-cover rounded-lg"
                     />

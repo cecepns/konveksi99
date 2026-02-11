@@ -15,7 +15,11 @@ import AboutImage from "../assets/about.jpg";
 
 const About = () => {
   const [settings, setSettings] = useState({
+    company_name: '',
     company_about: '',
+    company_history: '',
+    company_vision: '',
+    company_mission: '',
   });
   const [loading, setLoading] = useState(true);
 
@@ -29,7 +33,11 @@ const About = () => {
       const response = await settingsAPI.get();
       const settingsData = response.data.data || {};
       setSettings({
+        company_name: settingsData.company_name || 'Belarise Clothing',
         company_about: settingsData.company_about || '',
+        company_history: settingsData.company_history || '',
+        company_vision: settingsData.company_vision || '',
+        company_mission: settingsData.company_mission || '',
       });
     } catch (error) {
       console.error('Error fetching settings:', error);
@@ -90,12 +98,27 @@ const About = () => {
     },
   ];
 
+  const defaultCompanyHistory =
+    "Belarise Clothing lahir dari kecintaan pada gaya feminin dan detail manis. Kami menghadirkan koleksi ready to wear bertema coquette outfit yang dirancang untuk membuat pemakainya merasa percaya diri di setiap momen.\n\n" +
+    "Setiap koleksi Belarise diproduksi dengan material pilihan yang lembut dan nyaman dipakai seharian, dengan cutting yang flattering untuk berbagai bentuk tubuh.\n\n" +
+    "Belarise menerima pembelian ecer maupun grosir untuk reseller dan butik, dengan komitmen menjaga kualitas, konsistensi warna, dan kerapian jahitan di setiap piece.";
+
+  const defaultVision =
+    "Menjadi brand fashion lokal yang menghadirkan koleksi coquette outfit yang manis, elegan, dan mudah dipadupadankan untuk perempuan Indonesia.\n\n" +
+    "Belarise ingin menjadi pilihan utama untuk tampilan feminin yang nyaman dan percaya diri di setiap kesempatan.";
+
+  const defaultMission =
+    "- Menghadirkan pakaian ready to wear berbahan lembut dan nyaman dipakai seharian.\n" +
+    "- Menyediakan cutting yang flattering dan ramah berbagai bentuk tubuh.\n" +
+    "- Mendukung reseller dan butik melalui layanan grosir yang rapi dan konsisten.\n" +
+    "- Menjaga kualitas detail, warna, dan jahitan di setiap koleksi Belarise.";
+
   return (
     <>
       <SEO
-        title="About Us"
-        description="PT. Denko Wahana Sakti - Perusahaan industri terpercaya dengan pengalaman lebih dari 15 tahun dalam menyediakan solusi industri berkualitas tinggi."
-        keywords="tentang denko wahana sakti, sejarah perusahaan, visi misi, nilai perusahaan"
+        title="Tentang Belarise Clothing"
+        description="Belarise Clothing adalah brand fashion lokal yang menghadirkan koleksi coquette outfit ready to wear yang manis, feminin, dan nyaman untuk dikenakan sehari-hari."
+        keywords="belarise clothing, about belarise, brand coquette outfit, pakaian wanita, fashion lokal"
       />
 
       {/* Hero Section */}
@@ -106,16 +129,14 @@ const About = () => {
               className="text-2xl lg:text-6xl font-bold mb-6"
               data-aos="fade-up"
             >
-              Tentang <span className="text-secondary-400">Kami</span>
+              Tentang <span className="text-secondary-400">Belarise</span>
             </h1>
             <p
               className="text-xl lg:text-2xl text-gray-200 leading-relaxed"
               data-aos="fade-up"
               data-aos-delay="200"
             >
-              Lebih dari 15 tahun menghadirkan solusi industri terbaik dengan
-              dedikasi tinggi untuk kepuasan pelanggan dan kualitas yang tak
-              tergoyahkan.
+              Belarise Clothing menghadirkan koleksi pakaian ready to wear bertema coquette outfit yang manis, feminin, dan mudah dipadupadankan untuk berbagai momen spesialmu.
             </p>
           </div>
         </div>
@@ -127,7 +148,7 @@ const About = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div data-aos="fade-right">
               <h2 className="text-2xl lg:text-4xl font-bold text-gray-900 mb-6">
-                PT. Denko Wahana Sakti
+                {settings.company_name || 'Belarise Clothing'}
               </h2>
               {loading ? (
                 <Loading />
@@ -145,7 +166,7 @@ const About = () => {
                 </div>
                 <div className="text-center p-4">
                   <div className="text-3xl font-bold text-secondary-600 mb-2">
-                    15+
+                    5+
                   </div>
                   <div className="text-gray-600">Tahun Pengalaman</div>
                 </div>
@@ -176,12 +197,9 @@ const About = () => {
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900">Visi Kami</h3>
               </div>
-              <p className="text-lg text-gray-600 leading-relaxed">
-                Menjadi perusahaan perdagangan terbaik di dunia dengan
-                mengutamakan kualitas dan menomorsatukan pelayanan. Become a
-                world leading trading company by emphasizing quality and
-                services
-              </p>
+              <div className="text-lg text-gray-600 leading-relaxed whitespace-pre-line">
+                {settings.company_vision || defaultVision}
+              </div>
             </div>
 
             {/* Mission */}
@@ -192,12 +210,9 @@ const About = () => {
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900">Misi Kami</h3>
               </div>
-              <p className="text-lg text-gray-600 leading-relaxed">
-                Memberikan solusi terbaik kepada pelanggan melalui SDM (sumber
-                daya manusia) yang berkualitas, profesional, dan sejahtera.
-                Providing best solutions to customers which driven by
-                professional, high quality and prosperous human resources.
-              </p>
+              <div className="text-lg text-gray-600 leading-relaxed whitespace-pre-line">
+                {settings.company_mission || defaultMission}
+              </div>
             </div>
           </div>
         </div>
@@ -259,24 +274,10 @@ const About = () => {
           <div className="max-w-4xl mx-auto">
             <div className="card p-8" data-aos="fade-up">
               <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                Sejarah Perusahaan Group Denko
+                Cerita Belarise Clothing
               </h3>
               <div className="prose prose-lg max-w-none text-gray-600 leading-relaxed space-y-4">
-                <p>
-                  PT Denko Wahana Sakti didirikan pada Bulan November Tahun
-                  1992. Berawal dari sebuah kantor di daerah Ketapang, Jakarta
-                  Pusat yang bergerak dalam bisnis penjualan Turbin Ventilator,
-                  Castor Wheel serta beberapa produk Material Handling.
-                </p>
-                <p>
-                  Kemudian kantor pindah ke WISMA CORMIC di Jalan Suryopranoto
-                  No. 1-9, Delta Building Blok A 4-7, Jakarta Pusat.
-                </p>
-                <p>
-                  Pada Bulan Juli Tahun 2011, Head Quarter Denko Group (kantor
-                  yang kita miliki sendiri) pindah ke Komplek Duta Merlin Blok C
-                  1-3, Jalan Gajah Mada, Jakarta Pusat.
-                </p>
+                {formatCompanyAbout(settings.company_history || defaultCompanyHistory)}
               </div>
             </div>
           </div>

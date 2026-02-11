@@ -25,6 +25,8 @@ import AdminSettings from './pages/admin/Settings';
 // Admin Layout
 import AdminLayout from './components/Admin/AdminLayout';
 import ProtectedRoute from './components/Admin/ProtectedRoute';
+import { settingsAPI } from './utils/api';
+import { initFacebookPixel, trackPageView } from './utils/facebookPixel';
 
 function App() {
   useEffect(() => {
@@ -36,17 +38,70 @@ function App() {
     });
   }, []);
 
+  useEffect(() => {
+    const initializePixel = async () => {
+      try {
+        const response = await settingsAPI.get();
+        const data = response.data?.data || {};
+        const pixelId = data.facebook_pixel_id;
+
+        if (pixelId) {
+          initFacebookPixel(pixelId);
+        }
+      } catch (error) {
+        console.error('Error initializing Facebook Pixel:', error);
+      }
+    };
+
+    initializePixel();
+  }, []);
+
   return (
     <HelmetProvider>
       <Router>
         <ScrollToTop />
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<Layout><Home /></Layout>} />
-          <Route path="/about" element={<Layout><About /></Layout>} />
-          <Route path="/products" element={<Layout><Products /></Layout>} />
-          <Route path="/products/:slug" element={<Layout><ProductDetail /></Layout>} />
-          <Route path="/contact" element={<Layout><Contact /></Layout>} />
+          <Route
+            path="/"
+            element={
+              <Layout>
+                <Home />
+              </Layout>
+            }
+          />
+          <Route
+            path="/about"
+            element={
+              <Layout>
+                <About />
+              </Layout>
+            }
+          />
+          <Route
+            path="/products"
+            element={
+              <Layout>
+                <Products />
+              </Layout>
+            }
+          />
+          <Route
+            path="/products/:slug"
+            element={
+              <Layout>
+                <ProductDetail />
+              </Layout>
+            }
+          />
+          <Route
+            path="/contact"
+            element={
+              <Layout>
+                <Contact />
+              </Layout>
+            }
+          />
 
           {/* Admin Login */}
           <Route path="/admin/login" element={<AdminLogin />} />

@@ -1,12 +1,24 @@
 import axios from 'axios';
 
 // const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
-const API_BASE_URL = 'https://api-inventory.isavralabel.com/denko/api';
+// const API_BASE_URL = 'https://api-inventory.isavralabel.com/denko/api';
+const API_BASE_URL = 'http://localhost:5000/api';
+const FILE_BASE_URL = API_BASE_URL.replace(/\/api$/, '');
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
 });
+
+// Helper untuk membentuk URL penuh dari path image (misalnya "/uploads/xxx.jpg")
+export const getImageUrl = (path) => {
+  if (!path) return '';
+  // Jika sudah full URL (http/https), langsung kembalikan
+  if (/^https?:\/\//i.test(path)) return path;
+  // Pastikan path diawali dengan slash
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  return `${FILE_BASE_URL}${normalizedPath}`;
+};
 
 // Request interceptor untuk menambahkan token
 api.interceptors.request.use(

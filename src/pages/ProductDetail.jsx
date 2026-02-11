@@ -4,7 +4,7 @@ import AOS from 'aos';
 import SEO from '../components/Common/SEO';
 import Loading from '../components/Common/Loading';
 import { ArrowLeft, Calendar, Share2 } from 'lucide-react';
-import { productsAPI, settingsAPI } from '../utils/api';
+import { productsAPI, settingsAPI, getImageUrl } from '../utils/api';
 import { stripHtml, formatDate, truncateText } from '../utils/seo';
 
 const ProductDetail = () => {
@@ -104,7 +104,7 @@ const ProductDetail = () => {
         title={product.title}
         description={metaDescription}
         keywords={`${product.title}, produk industri, ${product.category || 'peralatan industri'}`}
-        image={product.image}
+        image={getImageUrl(product.image)}
       />
 
       {/* Breadcrumb */}
@@ -139,7 +139,7 @@ const ProductDetail = () => {
             <div data-aos="fade-right">
               <div className="sticky top-24">
                 <img 
-                  src={product.image || 'https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg'} 
+                  src={getImageUrl(product.image) || 'https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg'} 
                   alt={product.title}
                   className="w-full h-96 lg:h-[500px] object-cover rounded-lg shadow-lg"
                 />
@@ -226,7 +226,7 @@ const ProductDetail = () => {
                 >
                   <div className="relative overflow-hidden">
                     <img 
-                      src={relatedProduct.image || 'https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg'} 
+                      src={getImageUrl(relatedProduct.image) || 'https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg'} 
                       alt={relatedProduct.title}
                       className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                     />

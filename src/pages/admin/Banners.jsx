@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import AOS from 'aos';
-import { Plus, CreditCard as Edit, Trash2, X, Save, MoveUp, MoveDown } from 'lucide-react';
-import { bannersAPI, uploadAPI } from '../../utils/api';
+import { Plus, PencilIcon as Edit, Trash2, X, Save, MoveUp, MoveDown } from 'lucide-react';
+import { bannersAPI, uploadAPI, getImageUrl } from '../../utils/api';
 
 const Banners = () => {
   const [banners, setBanners] = useState([]);
@@ -85,16 +85,15 @@ const Banners = () => {
     setUploading(true);
     try {
       const response = await uploadAPI.uploadImage(file);
-      // Response structure: { success, message, data: { filename, url, fullUrl } }
-      const imageUrl = response.data.data?.fullUrl || response.data.data?.url || response.data.fullUrl;
-      
-      if (!imageUrl) {
+      // BE returns path e.g. /uploads/xxx.jpg
+      const imagePath = response.data.data?.url;
+      if (!imagePath) {
         throw new Error('Image URL not found in response');
       }
 
       setFormData({
         ...formData,
-        image: imageUrl
+        image: imagePath
       });
     } catch (error) {
       console.error('Error uploading image:', error);
@@ -212,7 +211,7 @@ const Banners = () => {
             >
               <div className="relative">
                 <img 
-                  src={banner.image || 'https://images.pexels.com/photos/3862132/pexels-photo-3862132.jpeg'} 
+                  src={getImageUrl(banner.image) || 'https://images.pexels.com/photos/3862132/pexels-photo-3862132.jpeg'} 
                   alt={banner.title}
                   className="w-full h-48 object-cover"
                 />
@@ -339,7 +338,7 @@ const Banners = () => {
                   )}
                   {formData.image && (
                     <img 
-                      src={formData.image} 
+                      src={getImageUrl(formData.image)} 
                       alt="Preview"
                       className="w-full h-48 object-cover rounded-lg"
                     />

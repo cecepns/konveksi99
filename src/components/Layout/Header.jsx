@@ -2,18 +2,40 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Phone, Mail } from 'lucide-react';
 import Logo from '../../assets/logo.png';
+import { settingsAPI } from '../../utils/api';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [settings, setSettings] = useState({
+    company_phone: '',
+    company_email: '',
+    company_address: '',
+  });
   const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-    
+
+    const fetchSettings = async () => {
+      try {
+        const response = await settingsAPI.get();
+        const data = response.data.data || {};
+        setSettings({
+          company_phone: data.company_phone || '',
+          company_email: data.company_email || '',
+          company_address: data.company_address || '',
+        });
+      } catch (error) {
+        console.error('Error fetching header settings:', error);
+      }
+    };
+
     window.addEventListener('scroll', handleScroll);
+    fetchSettings();
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -26,38 +48,44 @@ const Header = () => {
 
   const isActive = (path) => location.pathname === path;
 
+  const topPhone = settings.company_phone || '0881022598949';
+  const topEmail = settings.company_email || 'selvi@denko.co.id';
+  const topAddress = settings.company_address
+    ? settings.company_address.split('\n')[0]
+    : 'Kawasan Industri de Prima Terra, Jl. Raya Sapan Blok E2/11';
+
   return (
     <>
       {/* Top Bar */}
-      <div className="bg-primary-600 text-white py-2">
+      <div className="bg-gradient-to-r from-primary-500 to-secondary-400 text-white py-2">
         <div className="container mx-auto px-4">
           <div className="flex flex-col sm:flex-row justify-between items-center text-sm">
             <div className="flex items-center space-x-4 mb-1 sm:mb-0">
               <div className="flex items-center space-x-1">
                 <Phone size={14} />
-                <span>0881022598949</span>
+                <span>{topPhone}</span>
               </div>
               <div className="flex items-center space-x-1">
                 <Mail size={14} />
-                <span>selvi@denko.co.id</span>
+                <span>{topEmail}</span>
               </div>
             </div>
             <div className="text-center sm:text-right">
-              <span>Kawasan Industri de Prima Terra, Jl. Raya Sapan Blok E2/11</span>
+              <span>{topAddress}</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Main Header */}
-      <header className={`sticky top-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white shadow-lg' : 'bg-white'
+      <header className={`sticky top-0 z-50 border-b-2 border-slate-200 transition-all duration-300 ${
+        isScrolled ? 'bg-white' : 'bg-white'
       }`}>
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center py-4">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-3">
-              <img src={Logo} />
+              <img src={Logo}  className="w-44 h-auto" />
             </Link>
 
             {/* Desktop Navigation */}
