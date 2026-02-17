@@ -133,7 +133,7 @@ const Contact = () => {
     <>
       <SEO 
         title="Contact Us"
-        description="Hubungi kami untuk konsultasi paket internet, informasi pemasangan WiFi, atau kerjasama layanan jaringan di kawasan BSB City dan Kota Semarang."
+        description="Hubungi kami untuk konsultasi paket internet, informasi pemasangan WiFi, atau kerjasama layanan jaringan di Kawasan Anda."
         keywords="kontak penyedia jasa wifi, alamat wifi bsb city, telepon wifi semarang, email layanan internet, konsultasi paket wifi"
       />
 

@@ -288,7 +288,7 @@ const Settings = () => {
                 value={settings.home_about_description || ''}
                 onChange={handleInputChange}
                 className="input-field resize-none"
-                placeholder="Layanan pemasangan dan pengelolaan jaringan internet serta WiFi untuk rumah, kost, ruko, dan bisnis di kawasan BSB City dan Kota Semarang. Mengutamakan koneksi stabil, support teknis responsif, dan paket yang fleksibel."
+                placeholder="Layanan pemasangan dan pengelolaan jaringan internet serta WiFi untuk rumah, kost, ruko, dan bisnis di Kawasan Anda. Mengutamakan koneksi stabil, support teknis responsif, dan paket yang fleksibel."
               />
               <p className="text-sm text-gray-500 mt-2">
                 This text will replace the default description on the Home page About section.

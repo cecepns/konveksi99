@@ -111,7 +111,7 @@ const Products = () => {
     <>
       <SEO 
         title="Paket & Produk WiFi"
-        description="Pilihan paket internet dan produk pendukung jaringan WiFi untuk rumah, kost, ruko, dan bisnis di kawasan BSB City dan Kota Semarang."
+        description="Pilihan paket internet dan produk pendukung jaringan WiFi untuk rumah, kost, ruko, dan bisnis di Kawasan Anda."
         keywords="paket wifi, paket internet bsb city, wifi semarang, perangkat jaringan, router, access point"
       />
 

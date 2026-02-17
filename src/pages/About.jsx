@@ -136,7 +136,7 @@ const About = () => {
               data-aos="fade-up"
               data-aos-delay="200"
             >
-              Kami menyediakan layanan internet dan WiFi dengan koneksi stabil untuk rumah, kost, ruko, dan bisnis di kawasan BSB City dan Kota Semarang.
+              Kami menyediakan layanan internet dan WiFi dengan koneksi stabil untuk rumah, kost, ruko, dan bisnis di Kawasan Anda.
             </p>
           </div>
         </div>

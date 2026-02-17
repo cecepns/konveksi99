@@ -28,7 +28,7 @@ const Footer = () => {
         company_phone: settingsData.company_phone || '',
         company_email: settingsData.company_email || '',
         company_working_hours: settingsData.company_working_hours || '',
-        company_about: settingsData.company_about || 'Penyedia layanan internet dan WiFi untuk rumah, kost, ruko, dan bisnis di kawasan BSB City dan Kota Semarang dengan koneksi stabil, dukungan teknis responsif, dan pemasangan yang rapi.'
+        company_about: settingsData.company_about || 'Penyedia layanan internet dan WiFi untuk rumah, kost, ruko, dan bisnis di Kawasan Anda dengan koneksi stabil, dukungan teknis responsif, dan pemasangan yang rapi.'
       });
     } catch (error) {
       console.error('Error fetching settings:', error);

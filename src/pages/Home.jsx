@@ -69,14 +69,14 @@ const Home = () => {
     settings.home_about_title || "Penyedia Jasa WiFi";
   const homeAboutDescription =
     settings.home_about_description ||
-    "Layanan pemasangan dan pengelolaan jaringan internet serta WiFi untuk rumah, kost, ruko, dan bisnis di kawasan BSB City dan Kota Semarang. Mengutamakan koneksi stabil, support teknis responsif, dan paket yang fleksibel sesuai kebutuhan pengguna.";
+    "Layanan pemasangan dan pengelolaan jaringan internet serta WiFi untuk rumah, kost, ruko, dan bisnis di Kawasan Anda. Mengutamakan koneksi stabil, support teknis responsif, dan paket yang fleksibel sesuai kebutuhan pengguna.";
   const homeAboutImage = settings.home_about_image;
 
   return (
     <>
       <SEO
         title="Penyedia Jasa WiFi - Internet Cepat BSB City"
-        description="Penyedia jasa internet dan WiFi untuk rumah, kost, ruko, dan bisnis di kawasan BSB City dan Kota Semarang. Koneksi stabil, support teknis cepat, dan paket fleksibel sesuai kebutuhan."
+        description="Penyedia jasa internet dan WiFi untuk rumah, kost, ruko, dan bisnis di Kawasan Anda. Koneksi stabil, support teknis cepat, dan paket fleksibel sesuai kebutuhan."
       />
 
       {/* Hero Banner Section */}
@@ -180,7 +180,7 @@ const Home = () => {
                   data-aos="fade-up"
                   data-aos-delay="200"
                 >
-                  Penyedia jasa WiFi dan internet berkecepatan tinggi dengan koneksi stabil untuk rumah, kost, ruko, dan bisnis Anda di kawasan BSB City dan Kota Semarang.
+                  Penyedia jasa WiFi dan internet berkecepatan tinggi dengan koneksi stabil untuk rumah, kost, ruko, dan bisnis Anda di Kawasan Anda.
                 </p>
                 <div
                   className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4"
@@ -460,7 +460,7 @@ const Home = () => {
             data-aos="fade-up"
             data-aos-delay="200"
           >
-            Nikmati koneksi internet yang cepat dan stabil untuk rumah, kost, ruko, maupun bisnis Anda di kawasan BSB City dan Kota Semarang. Jadwalkan survey lokasi atau konsultasi paket bersama tim kami.
+            Nikmati koneksi internet yang cepat dan stabil untuk rumah, kost, ruko, maupun bisnis Anda di Kawasan Anda. Jadwalkan survey lokasi atau konsultasi paket bersama tim kami.
           </p>
           <div
             className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4"
