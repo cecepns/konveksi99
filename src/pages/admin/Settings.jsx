@@ -125,7 +125,7 @@ const Settings = () => {
                 value={settings.company_name || ''}
                 onChange={handleInputChange}
                 className="input-field"
-                placeholder="Penyedia Jasa WiFi"
+                placeholder="Konveksi 99"
               />
             </div>
 
@@ -171,15 +171,15 @@ const Settings = () => {
               </label>
               <div className="relative">
                 <MapPin className="absolute left-3 top-3 text-gray-400" size={16} />
-                <textarea
-                  name="company_address"
-                  required
-                  rows={3}
-                  value={settings.company_address || ''}
-                  onChange={handleInputChange}
-                  className="input-field pl-10 resize-none"
-                  placeholder="BSB City, Ruko Jade Square, Blk. A No.12B, Kota Semarang, 50212"
-                />
+                  <textarea
+                    name="company_address"
+                    required
+                    rows={3}
+                    value={settings.company_address || ''}
+                    onChange={handleInputChange}
+                    className="input-field pl-10 resize-none"
+                    placeholder="Jln Desa Penedagandor&#10;Desa Penedagandor, Kec. Labuhan Haji&#10;Kab. Lombok Timur, NTB"
+                  />
               </div>
               <p className="text-sm text-gray-500 mt-2">
                 Gunakan baris baru untuk memisahkan setiap baris alamat.
@@ -219,15 +219,15 @@ const Settings = () => {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Company Description *
             </label>
-            <textarea
-              name="company_about"
-              required
-              rows={6}
-              value={settings.company_about || ''}
-              onChange={handleInputChange}
-              className="input-field resize-none"
-              placeholder="Write about your company, history, mission, and values..."
-            />
+              <textarea
+                name="company_about"
+                required
+                rows={6}
+                value={settings.company_about || ''}
+                onChange={handleInputChange}
+                className="input-field resize-none"
+                placeholder="Tuliskan profil singkat Konveksi 99, jenis layanan (seragam, kaos, bordir, dll), serta keunggulan utama Anda."
+              />
             <p className="text-sm text-gray-500 mt-2">
               This will be displayed on the About page and other sections of your website.
             </p>
@@ -237,18 +237,18 @@ const Settings = () => {
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Company History (About Page)
           </label>
-          <textarea
-            name="company_history"
-            rows={6}
-            value={settings.company_history || ''}
-            onChange={handleInputChange}
-            className="input-field resize-none"
-            placeholder={
-              "Penyedia Jasa WiFi BSB City hadir untuk menjawab kebutuhan koneksi internet yang stabil, cepat, dan terjangkau di kawasan hunian dan komersial BSB City, Kota Semarang.\n\n" +
-              "Berawal dari layanan jaringan di lingkungan sekitar, kami terus mengembangkan infrastruktur dan tim teknis agar setiap pelanggan mendapatkan pengalaman online yang nyaman dan andal.\n\n" +
-              "Dengan lokasi operasional di BSB City, Ruko Jade Square, Blk. A No.12B, kami berkomitmen memberikan layanan yang dekat, responsif, dan mudah dijangkau."
-            }
-          />
+            <textarea
+              name="company_history"
+              rows={6}
+              value={settings.company_history || ''}
+              onChange={handleInputChange}
+              className="input-field resize-none"
+              placeholder={
+                "Konveksi 99 berawal dari usaha rumahan di Desa Penedagandor yang melayani pesanan seragam dan kaos untuk lingkungan sekitar.\n\n" +
+                "Seiring waktu, kami terus mengembangkan peralatan produksi, meningkatkan kualitas bahan, dan menambah tim penjahit berpengalaman agar dapat menangani pesanan dalam skala kecil hingga besar.\n\n" +
+                "Dengan lokasi di Jln Desa Penedagandor, Desa Penedagandor, Kec. Labuhan Haji, Lombok Timur, NTB, kami berkomitmen memberikan layanan yang dekat, komunikatif, dan terpercaya."
+              }
+            />
           <p className="text-sm text-gray-500 mt-2">
             This text is shown in the Company History section on the About page. Use blank lines to separate paragraphs.
           </p>
@@ -274,7 +274,7 @@ const Settings = () => {
                 value={settings.home_about_title || ''}
                 onChange={handleInputChange}
                 className="input-field"
-                placeholder="Penyedia Jasa WiFi"
+                placeholder="Konveksi 99 Lombok Timur"
               />
             </div>
 
@@ -288,7 +288,7 @@ const Settings = () => {
                 value={settings.home_about_description || ''}
                 onChange={handleInputChange}
                 className="input-field resize-none"
-                placeholder="Layanan pemasangan dan pengelolaan jaringan internet serta WiFi untuk rumah, kost, ruko, dan bisnis di Kawasan Anda. Mengutamakan koneksi stabil, support teknis responsif, dan paket yang fleksibel."
+                placeholder="Konveksi 99 melayani pembuatan seragam, kaos, jaket, dan kebutuhan konveksi lainnya dengan kualitas bahan dan jahitan yang terjaga, serta pengerjaan yang tepat waktu."
               />
               <p className="text-sm text-gray-500 mt-2">
                 This text will replace the default description on the Home page About section.
@@ -349,8 +349,7 @@ const Settings = () => {
               onChange={handleInputChange}
               className="input-field resize-none"
               placeholder={
-                "Menjadi penyedia layanan internet terpercaya di BSB City dan Kota Semarang dengan jaringan yang stabil, cepat, dan mudah diakses.\n\n" +
-                "Hadir sebagai mitra digital yang membantu aktivitas kerja, belajar, hiburan, dan operasional bisnis berjalan tanpa gangguan."
+                "Menjadi mitra konveksi terpercaya di Lombok Timur dengan produk berkualitas, layanan profesional, dan pengerjaan yang konsisten tepat waktu."
               }
             />
           </div>
@@ -366,10 +365,10 @@ const Settings = () => {
               onChange={handleInputChange}
               className="input-field resize-none"
               placeholder={
-                "- Menyediakan koneksi internet yang stabil dan berkualitas dengan berbagai pilihan paket sesuai kebutuhan pelanggan.\n" +
-                "- Memberikan dukungan teknis yang responsif dan mudah dihubungi ketika terjadi kendala.\n" +
-                "- Melakukan survei dan instalasi secara profesional dengan memperhatikan kerapian dan keamanan jaringan.\n" +
-                "- Terus meningkatkan infrastruktur jaringan dan teknologi untuk menjaga performa koneksi di area layanan."
+                "- Menyediakan layanan konveksi dengan jahitan rapi dan bahan berkualitas.\n" +
+                "- Menjaga ketepatan waktu produksi sesuai kesepakatan dengan pelanggan.\n" +
+                "- Memberikan konsultasi desain dan material yang jujur dan informatif.\n" +
+                "- Terus meningkatkan keterampilan tim dan teknologi produksi."
               }
             />
           </div>

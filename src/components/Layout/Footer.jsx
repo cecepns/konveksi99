@@ -23,12 +23,12 @@ const Footer = () => {
       const response = await settingsAPI.get();
       const settingsData = response.data.data || {};
       setSettings({
-        company_name: settingsData.company_name || 'Penyedia Jasa WiFi',
+        company_name: settingsData.company_name || 'Konveksi 99',
         company_address: settingsData.company_address || '',
         company_phone: settingsData.company_phone || '',
         company_email: settingsData.company_email || '',
         company_working_hours: settingsData.company_working_hours || '',
-        company_about: settingsData.company_about || 'Penyedia layanan internet dan WiFi untuk rumah, kost, ruko, dan bisnis di Kawasan Anda dengan koneksi stabil, dukungan teknis responsif, dan pemasangan yang rapi.'
+        company_about: settingsData.company_about || 'Konveksi 99 melayani pembuatan seragam, kaos sablon, bordir, dan berbagai kebutuhan konveksi lainnya dengan jahitan rapi dan bahan berkualitas di Lombok Timur.'
       });
     } catch (error) {
       console.error('Error fetching settings:', error);
@@ -75,9 +75,10 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li><Link to="/" className="text-gray-400 hover:text-primary-400 transition-colors">Home</Link></li>
-              <li><Link to="/about" className="text-gray-400 hover:text-primary-400 transition-colors">About Us</Link></li>
-              <li><Link to="/products" className="text-gray-400 hover:text-primary-400 transition-colors">Products</Link></li>
-              <li><Link to="/contact" className="text-gray-400 hover:text-primary-400 transition-colors">Contact</Link></li>
+              <li><Link to="/about" className="text-gray-400 hover:text-primary-400 transition-colors">Tentang Kami</Link></li>
+              <li><Link to="/products" className="text-gray-400 hover:text-primary-400 transition-colors">Katalog Produk</Link></li>
+              <li><Link to="/status-pesanan" className="text-gray-400 hover:text-primary-400 transition-colors">Status Pesanan</Link></li>
+              <li><Link to="/contact" className="text-gray-400 hover:text-primary-400 transition-colors">Kontak</Link></li>
             </ul>
           </div>
 

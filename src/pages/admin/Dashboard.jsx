@@ -85,9 +85,9 @@ const Dashboard = () => {
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-primary-600 to-primary-800 rounded-lg p-6 text-white" data-aos="fade-up">
-        <h1 className="text-2xl font-bold mb-2">Welcome to Admin Dashboard</h1>
-        <p className="text-primary-100">Manage your WiFi service website content</p>
+      <div className="bg-gradient-to-r from-primary-700 to-primary-900 rounded-lg p-6 text-white" data-aos="fade-up">
+        <h1 className="text-2xl font-bold mb-2">Welcome to Konveksi 99 Admin</h1>
+        <p className="text-primary-100">Kelola konten website dan pesanan Konveksi 99</p>
       </div>
 
       {/* Stats Cards */}

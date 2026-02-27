@@ -18,6 +18,17 @@ import "swiper/css/navigation";
 import "swiper/css/effect-fade";
 import AboutImage from "../assets/about.jpg";
 
+const formatRupiah = (value) => {
+  if (value === null || value === undefined || value === "") return "";
+  const number = Number(value);
+  if (Number.isNaN(number)) return value;
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0,
+  }).format(number);
+};
+
 const Home = () => {
   const [banners, setBanners] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -59,24 +70,24 @@ const Home = () => {
   }, []);
 
   const stats = [
-    { icon: Users, label: "Pelanggan Aktif", value: "1000+" },
+    { icon: Users, label: "Pelanggan Puas", value: "500+" },
     { icon: Award, label: "Tahun Pengalaman", value: "5+" },
-    { icon: Zap, label: "Titik Pemasangan", value: "1000+" },
-    { icon: CheckCircle, label: "Uptime Jaringan", value: "99%" },
+    { icon: Zap, label: "Pesanan / Bulan", value: "100+" },
+    { icon: CheckCircle, label: "Kepuasan Pelanggan", value: "99%" },
   ];
 
   const homeAboutTitle =
-    settings.home_about_title || "Penyedia Jasa WiFi";
+    settings.home_about_title || "Konveksi 99 Lombok Timur";
   const homeAboutDescription =
     settings.home_about_description ||
-    "Layanan pemasangan dan pengelolaan jaringan internet serta WiFi untuk rumah, kost, ruko, dan bisnis di Kawasan Anda. Mengutamakan koneksi stabil, support teknis responsif, dan paket yang fleksibel sesuai kebutuhan pengguna.";
+    "Konveksi 99 melayani pembuatan seragam, kaos, jaket, dan berbagai kebutuhan konveksi lainnya dengan kualitas jahitan rapi dan bahan yang nyaman. Berlokasi di Jln Desa Penedagandor, Desa Penedagandor, Kec. Labuhan Haji, Lombok Timur, NTB.";
   const homeAboutImage = settings.home_about_image;
 
   return (
     <>
       <SEO
-        title="Penyedia Jasa WiFi - Internet Cepat BSB City"
-        description="Penyedia jasa internet dan WiFi untuk rumah, kost, ruko, dan bisnis di Kawasan Anda. Koneksi stabil, support teknis cepat, dan paket fleksibel sesuai kebutuhan."
+        title="Konveksi 99 - Jasa Konveksi Lombok Timur"
+        description="Konveksi 99 adalah jasa konveksi, sablon, dan bordir di Lombok Timur yang melayani pembuatan seragam, kaos, dan kebutuhan sandang lainnya untuk personal, komunitas, dan perusahaan."
       />
 
       {/* Hero Banner Section */}
@@ -115,7 +126,7 @@ const Home = () => {
                       "https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg"
                     }
                     alt={banner.title || "Banner"}
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-cover"
                   />
                   {/* <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/40"></div> */}
                   <div className="absolute inset-0 flex items-center">
@@ -164,7 +175,7 @@ const Home = () => {
             ))}
           </Swiper>
         ) : (
-          <div className="relative bg-gradient-to-r from-primary-500 to-secondary-400 text-white overflow-hidden h-full">
+          <div className="relative bg-gradient-to-r from-primary-700 to-primary-900 text-white overflow-hidden h-full">
             <div className="absolute inset-0 bg-black opacity-20"></div>
             <div className="relative container mx-auto px-4 h-full flex items-center">
               <div className="max-w-4xl">
@@ -172,15 +183,15 @@ const Home = () => {
                   className="text-2xl lg:text-6xl font-bold mb-6 leading-tight"
                   data-aos="fade-up"
                 >
-                  Internet Cepat{" "}
-                  <span className="text-secondary-400">& Stabil</span>
+                  Solusi Konveksi{" "}
+                  <span className="text-secondary-300">Ber kualitas</span>
                 </h1>
                 <p
                   className="text-xl lg:text-2xl mb-8 text-gray-200 leading-relaxed"
                   data-aos="fade-up"
                   data-aos-delay="200"
                 >
-                  Penyedia jasa WiFi dan internet berkecepatan tinggi dengan koneksi stabil untuk rumah, kost, ruko, dan bisnis Anda di Kawasan Anda.
+                  Konveksi 99 melayani pembuatan seragam, kaos, dan produk konveksi lain untuk sekolah, komunitas, usaha, hingga instansi dengan pengerjaan rapi dan tepat waktu.
                 </p>
                 <div
                   className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4"
@@ -191,14 +202,14 @@ const Home = () => {
                     to="/products"
                     className="btn-secondary inline-flex items-center justify-center space-x-2 px-8 py-4 text-lg"
                   >
-                    <span>Lihat Paket Internet</span>
+                    <span>Lihat Katalog Produk</span>
                     <ArrowRight size={20} />
                   </Link>
                   <Link
                     to="/contact"
                     className="btn-outline bg-transparent border-white text-white hover:bg-white hover:text-primary-900 inline-flex items-center justify-center px-8 py-4 text-lg"
                   >
-                    Hubungi Kami
+                    Konsultasi Pesanan
                   </Link>
                 </div>
               </div>
@@ -239,15 +250,14 @@ const Home = () => {
               className="text-2xl lg:text-4xl font-bold text-gray-900 mb-4"
               data-aos="fade-up"
             >
-              Paket & Produk <span className="text-primary-600">Unggulan</span>
+              Katalog <span className="text-primary-600">Produk & Layanan</span>
             </h2>
             <p
               className="text-xl text-gray-600 max-w-3xl mx-auto"
               data-aos="fade-up"
               data-aos-delay="200"
             >
-              Temukan berbagai produk berkualitas tinggi yang telah dipercaya
-              oleh ratusan perusahaan di seluruh Indonesia.
+              Temukan berbagai pilihan produk konveksi, mulai dari kaos, seragam, hingga merchandise yang bisa disesuaikan dengan kebutuhan brand atau instansi Anda.
             </p>
           </div>
 
@@ -275,6 +285,13 @@ const Home = () => {
                     <h3 className="md:text-xl font-semibold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors line-clamp-2">
                       {product.title}
                     </h3>
+                    {product.harga !== null &&
+                      product.harga !== undefined &&
+                      product.harga !== "" && (
+                        <p className="text-sm md:text-xl font-bold text-secondary-600 mb-2">
+                          {formatRupiah(product.harga)}
+                        </p>
+                      )}
                     <p className="text-xs md:text-base text-gray-600 mb-4 line-clamp-3">
                       {product.description
                         ?.replace(/<[^>]*>/g, "")
@@ -302,7 +319,7 @@ const Home = () => {
               to="/products"
               className="btn-primary inline-flex items-center space-x-2 px-8 py-4 text-lg"
             >
-              <span>Lihat Semua Paket</span>
+              <span>Lihat Semua Produk</span>
               <ArrowRight size={20} />
             </Link>
           </div>
@@ -337,7 +354,7 @@ const Home = () => {
               <div className="w-full h-96 md:h-[600px]">
                 <img
                   src={getImageUrl(homeAboutImage) || AboutImage}
-                  alt="Tentang Layanan WiFi"
+                  alt="Workshop Konveksi 99"
                   className="w-full h-full object-cover rounded-2xl shadow-md"
                 />
               </div>
@@ -447,20 +464,20 @@ const Home = () => {
       </section> */}
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary-500 to-secondary-400 text-white">
+      <section className="py-20 bg-gradient-to-r from-primary-800 to-primary-900 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2
             className="text-2xl lg:text-4xl font-bold mb-6"
             data-aos="fade-up"
           >
-            Siap Internet Stabil di BSB City?
+            Siap Produksi Seragam & Kaos Berkualitas?
           </h2>
           <p
             className="text-xl mb-8 max-w-2xl mx-auto text-primary-100"
             data-aos="fade-up"
             data-aos-delay="200"
           >
-            Nikmati koneksi internet yang cepat dan stabil untuk rumah, kost, ruko, maupun bisnis Anda di Kawasan Anda. Jadwalkan survey lokasi atau konsultasi paket bersama tim kami.
+            Wujudkan seragam, kaos komunitas, atau kebutuhan konveksi lain dengan desain sesuai keinginan Anda. Tim Konveksi 99 siap membantu dari konsultasi bahan hingga proses produksi.
           </p>
           <div
             className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4"
@@ -471,14 +488,14 @@ const Home = () => {
               to="/contact"
               className="btn-secondary bg-secondary-600 hover:bg-secondary-700 inline-flex items-center justify-center space-x-2 px-8 py-4 text-lg"
             >
-              <span>Hubungi Kami</span>
+              <span>Konsultasi Sekarang</span>
               <ArrowRight size={20} />
             </Link>
             <Link
               to="/products"
               className="btn-outline !text-primary-600 border-white text-white hover:bg-white hover:text-primary-600 inline-flex items-center justify-center px-8 py-4 text-lg"
             >
-              Lihat Paket Internet
+              Lihat Katalog Produk
             </Link>
           </div>
         </div>

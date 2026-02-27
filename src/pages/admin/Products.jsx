@@ -6,6 +6,17 @@ import { productsAPI, uploadAPI, categoriesAPI, getImageUrl } from '../../utils/
 import Pagination from '../../components/Common/Pagination';
 import 'react-quill/dist/quill.snow.css';
 
+const formatRupiah = (value) => {
+  if (value === null || value === undefined || value === '') return '';
+  const number = Number(value);
+  if (Number.isNaN(number)) return value;
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    maximumFractionDigits: 0,
+  }).format(number);
+};
+
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,7 +31,8 @@ const Products = () => {
     description: '',
     image: '',
     category_id: '',
-    subcategory_id: ''
+    subcategory_id: '',
+    harga: ''
   });
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -32,7 +44,8 @@ const Products = () => {
     description: '',
     image: '',
     category_id: '',
-    subcategory_id: ''
+    subcategory_id: '',
+    harga: ''
   });
 
   const fetchProducts = useCallback(async () => {
@@ -101,7 +114,8 @@ const Products = () => {
         description: product.description,
         image: product.image || '',
         category_id: product.category_id || '',
-        subcategory_id: product.subcategory_id || ''
+        subcategory_id: product.subcategory_id || '',
+        harga: product.harga ?? ''
       };
       setEditingProduct(product);
       setFormData(newFormData);
@@ -115,7 +129,8 @@ const Products = () => {
         description: '',
         image: '',
         category_id: '',
-        subcategory_id: ''
+        subcategory_id: '',
+        harga: ''
       };
       setEditingProduct(null);
       setFormData(newFormData);
@@ -133,7 +148,8 @@ const Products = () => {
       description: '',
       image: '',
       category_id: '',
-      subcategory_id: ''
+      subcategory_id: '',
+      harga: ''
     };
     setFormData(newFormData);
     formDataRef.current = newFormData;
@@ -204,7 +220,8 @@ const Products = () => {
         description: formDataRef.current.description,
         image: formDataRef.current.image || '',
         category_id: formDataRef.current.category_id || null,
-        subcategory_id: formDataRef.current.subcategory_id || null
+        subcategory_id: formDataRef.current.subcategory_id || null,
+        harga: formDataRef.current.harga || null
       };
       
       // Log payload to debug
@@ -362,6 +379,11 @@ const Products = () => {
                           />
                           <div>
                             <div className="text-sm font-medium text-gray-900">{product.title}</div>
+                            {product.harga !== null && product.harga !== undefined && product.harga !== '' && (
+                              <div className="text-sm font-semibold text-primary-600">
+                                {formatRupiah(product.harga)}
+                              </div>
+                            )}
                             <div className="text-sm text-gray-500">
                               {product.description?.replace(/<[^>]*>/g, '').slice(0, 50)}...
                             </div>
@@ -468,6 +490,22 @@ const Products = () => {
                     onChange={handleInputChange}
                     className="input-field"
                     placeholder="Enter product title"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Harga (opsional)
+                  </label>
+                  <input
+                    type="number"
+                    name="harga"
+                    min="0"
+                    step="1000"
+                    value={formData.harga}
+                    onChange={handleInputChange}
+                    className="input-field"
+                    placeholder="Masukkan harga, contoh: 100000"
                   />
                 </div>
 

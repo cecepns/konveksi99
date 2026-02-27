@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Phone, Mail } from 'lucide-react';
-import Logo from '../../assets/logo.jpeg';
+import Logo from '../../assets/logo.png';
 import { settingsAPI } from '../../utils/api';
 
 const Header = () => {
@@ -41,18 +41,19 @@ const Header = () => {
 
   const navigation = [
     { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Paket Internet', href: '/products' },
-    { name: 'Contact', href: '/contact' },
+    { name: 'Tentang', href: '/about' },
+    { name: 'Katalog Produk', href: '/products' },
+    { name: 'Status Pesanan', href: '/status-pesanan' },
+    { name: 'Kontak', href: '/contact' },
   ];
 
   const isActive = (path) => location.pathname === path;
 
   const topPhone = settings.company_phone || '081234567890';
-  const topEmail = settings.company_email || 'info@penyediajasawifi.id';
+  const topEmail = settings.company_email || 'info@konveksi99.id';
   const topAddress = settings.company_address
     ? settings.company_address.split('\n')[0]
-    : 'BSB City, Ruko Jade Square, Blk. A No.12B, Kota Semarang, 50212';
+    : 'Jln Desa Penedagandor, Desa Penedagandor, Kec. Labuhan Haji, Lombok Timur, NTB';
 
   return (
     <>

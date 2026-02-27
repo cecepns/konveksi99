@@ -2,6 +2,7 @@ import Header from './Header';
 import Footer from './Footer';
 import WhatsAppButton from '../Common/WhatsAppButton';
 import { Outlet } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const Layout = ({ children }) => {
   return (
@@ -14,6 +15,11 @@ const Layout = ({ children }) => {
       <WhatsAppButton />
     </div>
   );
+};
+
+Layout.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  children: PropTypes.node,
 };
 
 export default Layout;

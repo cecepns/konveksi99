@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
 import Loading from '../Common/Loading';
 import { authAPI } from '../../utils/api';
@@ -23,7 +24,7 @@ const ProtectedRoute = ({ children }) => {
     try {
       await authAPI.verifyToken();
       setIsAuthenticated(true);
-    } catch (error) {
+    } catch {
       localStorage.removeItem('admin_token');
       setIsAuthenticated(false);
     } finally {
@@ -44,6 +45,10 @@ const ProtectedRoute = ({ children }) => {
   }
 
   return children;
+};
+
+ProtectedRoute.propTypes = {
+  children: PropTypes.node,
 };
 
 export default ProtectedRoute;

@@ -1,3 +1,6 @@
+/* eslint-env node */
+/* eslint-disable no-unused-vars */
+
 const express = require('express');
 const mysql = require('mysql2');
 const bcrypt = require('bcryptjs');
@@ -18,18 +21,15 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
-});
-app.use('/api', limiter);
+// // Rate limiting
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 100 // limit each IP to 100 requests per windowMs
+// });
+// app.use('/api', limiter);
 
 // CORS configuration
-app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:3000'],
-  credentials: true
-}));
+app.use(cors());
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -103,6 +103,27 @@ const authenticateToken = (req, res, next) => {
     }
     req.user = user;
     next();
+  });
+};
+
+// Helper function to generate human-friendly order code (e.g. K99-20250217-001)
+const generateOrderCode = (callback) => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const datePart = `${year}${month}${day}`;
+  const prefix = `K99-${datePart}-`;
+
+  const countQuery = 'SELECT COUNT(*) AS count FROM orders WHERE order_code LIKE ?';
+  db.query(countQuery, [`${prefix}%`], (err, results) => {
+    if (err) {
+      return callback(err);
+    }
+
+    const nextNumber = (results[0]?.count || 0) + 1;
+    const orderCode = `${prefix}${String(nextNumber).padStart(3, '0')}`;
+    callback(null, orderCode);
   });
 };
 
@@ -218,7 +239,7 @@ app.get('/api/products', (req, res) => {
 
       // Get products
       const query = `
-        SELECT p.id, p.title, p.slug, p.description, p.image, p.category, 
+        SELECT p.id, p.title, p.slug, p.description, p.image, p.category, p.harga,
                p.category_id, p.subcategory_id,
                c.name as category_name, s.name as subcategory_name,
                p.created_at, p.updated_at
@@ -258,7 +279,7 @@ app.get('/api/products/:slug', (req, res) => {
     const { slug } = req.params;
 
     const query = `
-      SELECT p.id, p.title, p.slug, p.description, p.image, p.category,
+      SELECT p.id, p.title, p.slug, p.description, p.image, p.category, p.harga,
              p.category_id, p.subcategory_id,
              c.name as category_name, s.name as subcategory_name,
              p.created_at, p.updated_at
@@ -290,7 +311,7 @@ app.get('/api/products/:slug', (req, res) => {
 // Create product (Admin only)
 app.post('/api/products', authenticateToken, (req, res) => {
   try {
-    const { title, description, image, category, category_id, subcategory_id } = req.body;
+    const { title, description, image, category, category_id, subcategory_id, harga } = req.body;
 
     if (!title || !description) {
       return res.status(400).json({ success: false, message: 'Title and description required' });
@@ -299,11 +320,11 @@ app.post('/api/products', authenticateToken, (req, res) => {
     const slug = generateSlug(title);
 
     const query = `
-      INSERT INTO products (title, slug, description, image, category, category_id, subcategory_id)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO products (title, slug, description, image, category, category_id, subcategory_id, harga)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
     
-    db.query(query, [title, slug, description, image, category || null, category_id || null, subcategory_id || null], (err, result) => {
+    db.query(query, [title, slug, description, image, category || null, category_id || null, subcategory_id || null, harga || null], (err, result) => {
       if (err) {
         if (err.code === 'ER_DUP_ENTRY') {
           return res.status(400).json({ success: false, message: 'Product with this title already exists' });
@@ -322,7 +343,8 @@ app.post('/api/products', authenticateToken, (req, res) => {
           image,
           category,
           category_id: category_id || null,
-          subcategory_id: subcategory_id || null
+          subcategory_id: subcategory_id || null,
+          harga: harga || null
         }
       });
     });
@@ -335,7 +357,7 @@ app.post('/api/products', authenticateToken, (req, res) => {
 app.put('/api/products/:id', authenticateToken, (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, image, category, category_id, subcategory_id } = req.body;
+    const { title, description, image, category, category_id, subcategory_id, harga } = req.body;
 
     if (!title || !description) {
       return res.status(400).json({ success: false, message: 'Title and description required' });
@@ -346,11 +368,11 @@ app.put('/api/products/:id', authenticateToken, (req, res) => {
     const query = `
       UPDATE products
       SET title = ?, slug = ?, description = ?, image = ?, category = ?, 
-          category_id = ?, subcategory_id = ?, updated_at = CURRENT_TIMESTAMP
+          category_id = ?, subcategory_id = ?, harga = ?, updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
     `;
     
-    db.query(query, [title, slug, description, image, category || null, category_id || null, subcategory_id || null, id], (err, result) => {
+    db.query(query, [title, slug, description, image, category || null, category_id || null, subcategory_id || null, harga || null, id], (err, result) => {
       if (err) {
         if (err.code === 'ER_DUP_ENTRY') {
           return res.status(400).json({ success: false, message: 'Product with this title already exists' });
@@ -687,6 +709,414 @@ app.post('/api/upload/quill-image', authenticateToken, upload.single('image'), (
   }
 });
 
+// =================== ORDERS & ORDER PROGRESS ROUTES ===================
+
+// Create new order (Admin only)
+app.post('/api/admin/orders', authenticateToken, (req, res) => {
+  try {
+    const {
+      order_code,
+      customer_name,
+      customer_phone,
+      customer_address,
+      notes,
+      status
+    } = req.body;
+
+    if (!customer_name) {
+      return res.status(400).json({ success: false, message: 'Customer name is required' });
+    }
+
+    const createOrder = (finalOrderCode) => {
+      const insertQuery = `
+        INSERT INTO orders (order_code, customer_name, customer_phone, customer_address, notes, status)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `;
+
+      db.query(
+        insertQuery,
+        [
+          finalOrderCode,
+          customer_name,
+          customer_phone || null,
+          customer_address || null,
+          notes || null,
+          status || 'pending'
+        ],
+        (err, result) => {
+          if (err) {
+            if (err.code === 'ER_NO_SUCH_TABLE') {
+              return res.status(500).json({
+                success: false,
+                message: 'Orders table not found. Please create orders and order_progress tables in the database.'
+              });
+            }
+            if (err.code === 'ER_DUP_ENTRY') {
+              return res.status(400).json({
+                success: false,
+                message: 'Order code already exists. Please use a different code.'
+              });
+            }
+            return res.status(500).json({ success: false, message: 'Database error' });
+          }
+
+          res.status(201).json({
+            success: true,
+            message: 'Order created successfully',
+            data: {
+              id: result.insertId,
+              order_code: finalOrderCode,
+              customer_name,
+              customer_phone: customer_phone || null,
+              customer_address: customer_address || null,
+              notes: notes || null,
+              status: status || 'pending'
+            }
+          });
+        }
+      );
+    };
+
+    if (order_code) {
+      createOrder(order_code);
+    } else {
+      generateOrderCode((err, generatedCode) => {
+        if (err) {
+          return res.status(500).json({
+            success: false,
+            message: err.code === 'ER_NO_SUCH_TABLE'
+              ? 'Orders table not found. Please run migration: supabase/migrations/20260217170000_orders_order_progress.sql'
+              : (err.message || 'Failed to generate order code')
+          });
+        }
+        createOrder(generatedCode);
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Get orders list for admin (with pagination & search)
+app.get('/api/admin/orders', authenticateToken, (req, res) => {
+  try {
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const search = req.query.search || '';
+    const offset = (page - 1) * limit;
+
+    let whereClause = 'WHERE 1=1';
+    const params = [];
+
+    if (search) {
+      whereClause += ' AND (order_code LIKE ? OR customer_name LIKE ? OR customer_phone LIKE ?)';
+      const like = `%${search}%`;
+      params.push(like, like, like);
+    }
+
+    const countQuery = `SELECT COUNT(*) AS total FROM orders ${whereClause}`;
+    db.query(countQuery, params, (countErr, countResult) => {
+      if (countErr) {
+        if (countErr.code === 'ER_NO_SUCH_TABLE') {
+          return res.status(500).json({
+            success: false,
+            message: 'Orders table not found. Please create orders and order_progress tables in the database.'
+          });
+        }
+        return res.status(500).json({ success: false, message: 'Database error' });
+      }
+
+      const totalItems = countResult[0].total;
+      const totalPages = Math.ceil(totalItems / limit);
+
+      const listQuery = `
+        SELECT id, order_code, customer_name, customer_phone, customer_address, notes, status, created_at, updated_at
+        FROM orders
+        ${whereClause}
+        ORDER BY created_at DESC
+        LIMIT ? OFFSET ?
+      `;
+
+      db.query(listQuery, [...params, limit, offset], (listErr, results) => {
+        if (listErr) {
+          return res.status(500).json({ success: false, message: 'Database error' });
+        }
+
+        res.json({
+          success: true,
+          data: results,
+          pagination: {
+            currentPage: page,
+            totalPages,
+            totalItems,
+            limit
+          }
+        });
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Get single order with progress for admin
+app.get('/api/admin/orders/:id', authenticateToken, (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const orderQuery = `
+      SELECT id, order_code, customer_name, customer_phone, customer_address, notes, status, created_at, updated_at
+      FROM orders
+      WHERE id = ?
+    `;
+
+    db.query(orderQuery, [id], (orderErr, orderResults) => {
+      if (orderErr) {
+        if (orderErr.code === 'ER_NO_SUCH_TABLE') {
+          return res.status(500).json({
+            success: false,
+            message: 'Orders table not found. Please create orders and order_progress tables in the database.'
+          });
+        }
+        return res.status(500).json({ success: false, message: 'Database error' });
+      }
+
+      if (orderResults.length === 0) {
+        return res.status(404).json({ success: false, message: 'Order not found' });
+      }
+
+      const order = orderResults[0];
+
+      const progressQuery = `
+        SELECT id, status, description, created_at
+        FROM order_progress
+        WHERE order_id = ?
+        ORDER BY created_at ASC, id ASC
+      `;
+
+      db.query(progressQuery, [id], (progressErr, progressResults) => {
+        if (progressErr) {
+          if (progressErr.code === 'ER_NO_SUCH_TABLE') {
+            return res.status(500).json({
+              success: false,
+              message: 'Order progress table not found. Please create orders and order_progress tables in the database.'
+            });
+          }
+          return res.status(500).json({ success: false, message: 'Database error' });
+        }
+
+        res.json({
+          success: true,
+          data: {
+            order,
+            progress: progressResults
+          }
+        });
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Update basic order info (Admin only)
+app.put('/api/admin/orders/:id', authenticateToken, (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      order_code,
+      customer_name,
+      customer_phone,
+      customer_address,
+      notes,
+      status
+    } = req.body;
+
+    if (!customer_name) {
+      return res.status(400).json({ success: false, message: 'Customer name is required' });
+    }
+
+    const updateQuery = `
+      UPDATE orders
+      SET order_code = ?, customer_name = ?, customer_phone = ?, customer_address = ?, notes = ?, status = ?, updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+    `;
+
+    db.query(
+      updateQuery,
+      [
+        order_code || null,
+        customer_name,
+        customer_phone || null,
+        customer_address || null,
+        notes || null,
+        status || 'pending',
+        id
+      ],
+      (err, result) => {
+        if (err) {
+          if (err.code === 'ER_NO_SUCH_TABLE') {
+            return res.status(500).json({
+              success: false,
+              message: 'Orders table not found. Please create orders and order_progress tables in the database.'
+            });
+          }
+          if (err.code === 'ER_DUP_ENTRY') {
+            return res.status(400).json({
+              success: false,
+              message: 'Order code already exists. Please use a different code.'
+            });
+          }
+          return res.status(500).json({ success: false, message: 'Database error' });
+        }
+
+        if (result.affectedRows === 0) {
+          return res.status(404).json({ success: false, message: 'Order not found' });
+        }
+
+        res.json({
+          success: true,
+          message: 'Order updated successfully'
+        });
+      }
+    );
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Add progress entry for an order (Admin only)
+app.post('/api/admin/orders/:id/progress', authenticateToken, (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, description } = req.body;
+
+    if (!status && !description) {
+      return res.status(400).json({
+        success: false,
+        message: 'At least status or description is required'
+      });
+    }
+
+    const insertProgressQuery = `
+      INSERT INTO order_progress (order_id, status, description)
+      VALUES (?, ?, ?)
+    `;
+
+    db.query(
+      insertProgressQuery,
+      [id, status || null, description || null],
+      (insertErr, insertResult) => {
+        if (insertErr) {
+          if (insertErr.code === 'ER_NO_SUCH_TABLE') {
+            return res.status(500).json({
+              success: false,
+              message: 'Order progress table not found. Please create orders and order_progress tables in the database.'
+            });
+          }
+          if (insertErr.code === 'ER_NO_REFERENCED_ROW_2') {
+            return res.status(404).json({ success: false, message: 'Order not found' });
+          }
+          return res.status(500).json({ success: false, message: 'Database error' });
+        }
+
+        // Optionally update main order status to latest status
+        if (status) {
+          const updateStatusQuery = `
+            UPDATE orders
+            SET status = ?, updated_at = CURRENT_TIMESTAMP
+            WHERE id = ?
+          `;
+          db.query(updateStatusQuery, [status, id], () => {
+            // Ignore errors here, as main insert already succeeded
+          });
+        }
+
+        const selectProgressQuery = `
+          SELECT id, status, description, created_at
+          FROM order_progress
+          WHERE id = ?
+        `;
+
+        db.query(selectProgressQuery, [insertResult.insertId], (selectErr, selectResults) => {
+          if (selectErr) {
+            return res.status(500).json({ success: false, message: 'Database error' });
+          }
+
+          res.status(201).json({
+            success: true,
+            message: 'Order progress added successfully',
+            data: selectResults[0]
+          });
+        });
+      }
+    );
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Public: get order and progress by order code or numeric ID
+app.get('/api/orders/:identifier/progress', (req, res) => {
+  try {
+    const { identifier } = req.params;
+
+    const orderQuery = `
+      SELECT id, order_code, customer_name, customer_phone, customer_address, notes, status, created_at, updated_at
+      FROM orders
+      WHERE id = ? OR order_code = ?
+      LIMIT 1
+    `;
+
+    db.query(orderQuery, [identifier, identifier], (orderErr, orderResults) => {
+      if (orderErr) {
+        if (orderErr.code === 'ER_NO_SUCH_TABLE') {
+          return res.status(500).json({
+            success: false,
+            message: 'Orders table not found. Please create orders and order_progress tables in the database.'
+          });
+        }
+        return res.status(500).json({ success: false, message: 'Database error' });
+      }
+
+      if (orderResults.length === 0) {
+        return res.status(404).json({ success: false, message: 'Order not found' });
+      }
+
+      const order = orderResults[0];
+
+      const progressQuery = `
+        SELECT id, status, description, created_at
+        FROM order_progress
+        WHERE order_id = ?
+        ORDER BY created_at ASC, id ASC
+      `;
+
+      db.query(progressQuery, [order.id], (progressErr, progressResults) => {
+        if (progressErr) {
+          if (progressErr.code === 'ER_NO_SUCH_TABLE') {
+            return res.status(500).json({
+              success: false,
+              message: 'Order progress table not found. Please create orders and order_progress tables in the database.'
+            });
+          }
+          return res.status(500).json({ success: false, message: 'Database error' });
+        }
+
+        res.json({
+          success: true,
+          data: {
+            order,
+            progress: progressResults
+          }
+        });
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
 // =================== ADMIN DASHBOARD ROUTES ===================
 
 // Get dashboard statistics (Admin only)
@@ -759,7 +1189,7 @@ app.get('/api/admin/products', authenticateToken, (req, res) => {
 
       // Get products
       const query = `
-        SELECT p.id, p.title, p.slug, p.description, p.image, p.category, p.status,
+        SELECT p.id, p.title, p.slug, p.description, p.image, p.category, p.harga, p.status,
                p.category_id, p.subcategory_id,
                c.name as category_name, s.name as subcategory_name,
                p.created_at, p.updated_at

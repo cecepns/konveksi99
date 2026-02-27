@@ -1,9 +1,8 @@
 import axios from 'axios';
 
-// const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
-// const API_BASE_URL = 'https://api-inventory.isavralabel.com/denko/api';
-// const API_BASE_URL = 'http://localhost:5000/api';
-const API_BASE_URL = 'https://api-inventory.isavralabel.com/wifi-exportpro/api';
+// Base URL API untuk backend Konveksi 99
+// Gunakan VITE_API_BASE_URL jika diset di environment, fallback ke localhost
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
 const FILE_BASE_URL = API_BASE_URL.replace(/\/api$/, '');
 
 const api = axios.create({
@@ -124,6 +123,26 @@ export const categoriesAPI = {
   createSubcategory: (data) => api.post('/admin/subcategories', data),
   updateSubcategory: (id, data) => api.put(`/admin/subcategories/${id}`, data),
   deleteSubcategory: (id) => api.delete(`/admin/subcategories/${id}`),
+};
+
+// Orders & progress endpoints
+export const ordersAPI = {
+  // Admin
+  getAllAdmin: (page = 1, limit = 10, search = '') => {
+    const params = new URLSearchParams({
+      page: page.toString(),
+      limit: limit.toString(),
+      search: search || '',
+    });
+    return api.get(`/admin/orders?${params.toString()}`);
+  },
+  getByIdAdmin: (id) => api.get(`/admin/orders/${id}`),
+  createAdmin: (data) => api.post('/admin/orders', data),
+  updateAdmin: (id, data) => api.put(`/admin/orders/${id}`, data),
+  addProgressAdmin: (id, data) => api.post(`/admin/orders/${id}/progress`, data),
+
+  // Public tracking
+  getProgressPublic: (identifier) => api.get(`/orders/${encodeURIComponent(identifier)}/progress`),
 };
 
 export default api;

@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const Loading = ({ size = "default" }) => {
   const sizeClasses = {
     small: "w-4 h-4",
@@ -10,6 +12,10 @@ const Loading = ({ size = "default" }) => {
       <div className={`${sizeClasses[size]} border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin`}></div>
     </div>
   );
+};
+
+Loading.propTypes = {
+  size: PropTypes.oneOf(['small', 'default', 'large']),
 };
 
 export default Loading;

@@ -7,6 +7,17 @@ import Pagination from '../components/Common/Pagination';
 import { Search, ListFilter as Filter, X } from 'lucide-react';
 import { productsAPI, categoriesAPI, getImageUrl } from '../utils/api';
 
+const formatRupiah = (value) => {
+  if (value === null || value === undefined || value === '') return '';
+  const number = Number(value);
+  if (Number.isNaN(number)) return value;
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    maximumFractionDigits: 0,
+  }).format(number);
+};
+
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -110,27 +121,27 @@ const Products = () => {
   return (
     <>
       <SEO 
-        title="Paket & Produk WiFi"
-        description="Pilihan paket internet dan produk pendukung jaringan WiFi untuk rumah, kost, ruko, dan bisnis di Kawasan Anda."
-        keywords="paket wifi, paket internet bsb city, wifi semarang, perangkat jaringan, router, access point"
+        title="Katalog Produk & Layanan Konveksi"
+        description="Katalog produk dan layanan Konveksi 99: kaos sablon, seragam, jaket, dan berbagai kebutuhan konveksi lainnya untuk sekolah, komunitas, usaha, dan instansi."
+        keywords="katalog konveksi 99, kaos sablon, seragam, jaket, konveksi lombok timur"
       />
 
       {/* Hero Section */}
-      <section className="bg-primary-600 text-white py-20">
+      <section className="bg-primary-700 text-white py-20">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <h1 
               className="text-2xl lg:text-6xl font-bold mb-6"
               data-aos="fade-up"
             >
-              Paket & Produk <span className="text-secondary-400">WiFi</span>
+              Katalog <span className="text-secondary-300">Produk Konveksi</span>
             </h1>
             <p 
               className="text-xl lg:text-2xl text-gray-200 max-w-4xl mx-auto"
               data-aos="fade-up" 
               data-aos-delay="200"
             >
-              Jelajahi berbagai paket internet dan perangkat pendukung jaringan WiFi yang siap mendukung kebutuhan online rumah, kost, ruko, maupun bisnis Anda.
+              Jelajahi berbagai pilihan kaos, seragam, dan produk konveksi lain yang dapat dikustom sesuai desain dan kebutuhan identitas brand atau instansi Anda.
             </p>
           </div>
         </div>
@@ -262,6 +273,13 @@ const Products = () => {
                       <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2">
                         {product.title}
                       </h3>
+                      {product.harga !== null &&
+                        product.harga !== undefined &&
+                        product.harga !== '' && (
+                          <p className="text-base md:text-xl font-bold text-secondary-600 mb-2">
+                            {formatRupiah(product.harga)}
+                          </p>
+                        )}
                       <p className="text-gray-600 text-sm mb-4 line-clamp-3">
                         {product.description?.replace(/<[^>]*>/g, '').slice(0, 100)}...
                       </p>

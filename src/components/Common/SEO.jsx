@@ -1,13 +1,14 @@
 import { Helmet } from 'react-helmet-async';
+import PropTypes from 'prop-types';
 
 const SEO = ({ 
-  title = "Penyedia Jasa WiFi", 
-  description = "Layanan internet dan WiFi dengan koneksi stabil untuk rumah, kost, ruko, dan bisnis di kawasan BSB City, Ruko Jade Square Blk. A No.12B, Kota Semarang 50212.",
-  keywords = "penyedia jasa wifi, internet rumahan, wifi bisnis, wifi bsb city, internet semarang, paket internet",
+  title = "Konveksi 99 - Jasa Konveksi Lombok Timur", 
+  description = "Konveksi 99 adalah jasa konveksi, sablon, dan bordir terpercaya yang berlokasi di Jln Desa Penedagandor, Desa Penedagandor, Kec. Labuhan Haji, Lombok Timur, NTB. Melayani pembuatan seragam, kaos, dan kebutuhan konveksi lainnya.",
+  keywords = "konveksi 99, jasa konveksi lombok timur, sablon kaos, bordir, seragam, konveksi labuhan haji",
   image = "/og-image.jpg",
   url = window.location.href
 }) => {
-  const siteTitle = "Penyedia Jasa WiFi";
+  const siteTitle = "Konveksi 99";
   const fullTitle = title === siteTitle ? title : `${title} - ${siteTitle}`;
 
   return (
@@ -34,9 +35,17 @@ const SEO = ({
       <link rel="canonical" href={url} />
       <meta name="robots" content="index, follow" />
       <meta name="language" content="Indonesian" />
-      <meta name="author" content="Penyedia Jasa WiFi" />
+      <meta name="author" content="Konveksi 99" />
     </Helmet>
   );
+};
+
+SEO.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  keywords: PropTypes.string,
+  image: PropTypes.string,
+  url: PropTypes.string,
 };
 
 export default SEO;

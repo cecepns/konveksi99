@@ -33,7 +33,7 @@ const About = () => {
       const response = await settingsAPI.get();
       const settingsData = response.data.data || {};
       setSettings({
-        company_name: settingsData.company_name || 'Penyedia Jasa WiFi',
+        company_name: settingsData.company_name || 'Konveksi 99',
         company_about: settingsData.company_about || '',
         company_history: settingsData.company_history || '',
         company_vision: settingsData.company_vision || '',
@@ -99,44 +99,44 @@ const About = () => {
   ];
 
   const defaultCompanyHistory =
-    "Penyedia Jasa WiFi BSB City hadir untuk menjawab kebutuhan koneksi internet yang stabil, cepat, dan terjangkau bagi hunian, kost, ruko, dan area komersial di kawasan BSB City, Kota Semarang.\n\n" +
-    "Berawal dari layanan jaringan di lingkungan sekitar, kami terus berkembang dengan menambah cakupan area, meningkatkan kualitas infrastruktur, dan memperkuat tim teknis agar setiap pelanggan mendapat pengalaman online yang nyaman.\n\n" +
-    "Dengan lokasi operasional di BSB City, Ruko Jade Square, Blk. A No.12B, Kota Semarang, kami berkomitmen memberikan layanan yang dekat, responsif, dan mudah dijangkau.";
+    "Konveksi 99 hadir untuk menjawab kebutuhan seragam, kaos, dan berbagai produk sandang berkualitas bagi sekolah, komunitas, usaha, dan instansi di Lombok Timur.\n\n" +
+    "Berawal dari usaha rumahan di Desa Penedagandor, kami terus berkembang dengan menambah peralatan produksi, meningkatkan kualitas bahan, serta memperkuat tim penjahit dan finishing agar setiap pesanan selesai rapi dan tepat waktu.\n\n" +
+    "Berlokasi di Jln Desa Penedagandor, Desa Penedagandor, Kec. Labuhan Haji, Lombok Timur, NTB, kami berkomitmen memberikan layanan yang dekat, komunikatif, dan mudah dijangkau.";
 
   const defaultVision =
-    "Menjadi penyedia layanan internet terpercaya di BSB City dan Kota Semarang dengan jaringan yang stabil, cepat, dan mudah diakses oleh rumah tangga maupun pelaku usaha.\n\n" +
-    "Hadir sebagai mitra digital yang membantu aktivitas kerja, belajar, hiburan, dan operasional bisnis berjalan tanpa gangguan.";
+    "Menjadi mitra konveksi terpercaya di Lombok Timur dengan produk berkualitas, layanan profesional, dan pengerjaan yang konsisten tepat waktu.\n\n" +
+    "Hadir sebagai solusi sandang bagi sekolah, komunitas, pelaku usaha, dan instansi dengan desain yang merepresentasikan identitas mereka.";
 
   const defaultMission =
-    "- Menyediakan koneksi internet yang stabil dan berkualitas dengan berbagai pilihan paket sesuai kebutuhan pelanggan.\n" +
-    "- Memberikan dukungan teknis yang responsif, ramah, dan mudah dihubungi ketika terjadi kendala.\n" +
-    "- Melakukan survei dan instalasi secara profesional dengan memperhatikan kerapian dan keamanan jaringan.\n" +
-    "- Terus meningkatkan infrastruktur jaringan dan teknologi untuk menjaga performa koneksi di area layanan.";
+    "- Menyediakan layanan konveksi dengan hasil jahitan rapi, bahan berkualitas, dan harga yang bersaing.\n" +
+    "- Memberikan konsultasi desain dan material yang jujur serta informatif kepada setiap pelanggan.\n" +
+    "- Menjaga ketepatan waktu produksi sesuai jadwal yang disepakati.\n" +
+    "- Terus meningkatkan keterampilan tim dan teknologi produksi untuk menghadirkan produk yang semakin baik.";
 
   return (
     <>
       <SEO
-        title="Tentang Penyedia Jasa WiFi BSB City"
-        description="Profil penyedia layanan internet dan WiFi yang berlokasi di BSB City, Ruko Jade Square, Blk. A No.12B, Kota Semarang 50212. Menyediakan koneksi stabil untuk rumah dan bisnis."
-        keywords="penyedia jasa wifi bsb city, wifi semarang, internet rumahan, internet bisnis, layanan wifi kantor"
+        title="Tentang Konveksi 99"
+        description="Profil Konveksi 99, jasa konveksi, sablon, dan bordir yang berlokasi di Jln Desa Penedagandor, Desa Penedagandor, Kec. Labuhan Haji, Lombok Timur, NTB."
+        keywords="konveksi 99, jasa konveksi lombok timur, sablon kaos, bordir, seragam, penedagandor"
       />
 
       {/* Hero Section */}
-      <section className="bg-primary-600 text-white py-20 lg:py-32">
+      <section className="bg-primary-700 text-white py-20 lg:py-32">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl">
             <h1
               className="text-2xl lg:text-6xl font-bold mb-6"
               data-aos="fade-up"
             >
-              Tentang <span className="text-secondary-400">Penyedia Jasa WiFi</span>
+              Tentang <span className="text-secondary-300">Konveksi 99</span>
             </h1>
             <p
               className="text-xl lg:text-2xl text-gray-200 leading-relaxed"
               data-aos="fade-up"
               data-aos-delay="200"
             >
-              Kami menyediakan layanan internet dan WiFi dengan koneksi stabil untuk rumah, kost, ruko, dan bisnis di Kawasan Anda.
+              Kami adalah jasa konveksi yang mengutamakan kualitas jahitan, ketepatan waktu, dan komunikasi yang jelas kepada setiap pelanggan.
             </p>
           </div>
         </div>
@@ -148,7 +148,7 @@ const About = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div data-aos="fade-right">
               <h2 className="text-2xl lg:text-4xl font-bold text-gray-900 mb-6">
-                {settings.company_name || 'Penyedia Jasa WiFi'}
+                {settings.company_name || 'Konveksi 99'}
               </h2>
               {loading ? (
                 <Loading />
@@ -176,7 +176,7 @@ const About = () => {
               <div className="w-full h-96 md:h-[500px]">
                 <img
                   src={AboutImage}
-                  alt="Kantor Penyedia Jasa WiFi"
+                  alt="Workshop Konveksi 99"
                   className="w-full h-full object-cover rounded-lg shadow-xl"
                 />
               </div>
@@ -274,7 +274,7 @@ const About = () => {
           <div className="max-w-4xl mx-auto">
             <div className="card p-8" data-aos="fade-up">
               <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                Cerita Penyedia Jasa WiFi
+                Cerita Konveksi 99
               </h3>
               <div className="prose prose-lg max-w-none text-gray-600 leading-relaxed space-y-4">
                 {formatCompanyAbout(settings.company_history || defaultCompanyHistory)}

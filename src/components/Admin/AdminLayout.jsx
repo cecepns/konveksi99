@@ -28,6 +28,7 @@ const AdminLayout = () => {
 
   const navigation = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+    { name: 'Orders', href: '/admin/orders', icon: FolderTree },
     { name: 'Products', href: '/admin/products', icon: Package },
     { name: 'Categories', href: '/admin/categories', icon: FolderTree },
     { name: 'Banners', href: '/admin/banners', icon: ImageIcon },

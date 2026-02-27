@@ -13,11 +13,13 @@ import About from './pages/About';
 import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
 import Contact from './pages/Contact';
+import OrderStatus from './pages/OrderStatus';
 
 // Admin Pages
 import AdminLogin from './pages/admin/Login';
 import AdminDashboard from './pages/admin/Dashboard';
 import AdminProducts from './pages/admin/Products';
+import AdminOrders from './pages/admin/Orders';
 import AdminBanners from './pages/admin/Banners';
 import AdminCategories from './pages/admin/Categories';
 import AdminSettings from './pages/admin/Settings';
@@ -26,7 +28,7 @@ import AdminSettings from './pages/admin/Settings';
 import AdminLayout from './components/Admin/AdminLayout';
 import ProtectedRoute from './components/Admin/ProtectedRoute';
 import { settingsAPI } from './utils/api';
-import { initFacebookPixel, trackPageView } from './utils/facebookPixel';
+import { initFacebookPixel } from './utils/facebookPixel';
 
 function App() {
   useEffect(() => {
@@ -102,6 +104,14 @@ function App() {
               </Layout>
             }
           />
+          <Route
+            path="/status-pesanan"
+            element={
+              <Layout>
+                <OrderStatus />
+              </Layout>
+            }
+          />
 
           {/* Admin Login */}
           <Route path="/admin/login" element={<AdminLogin />} />
@@ -117,6 +127,7 @@ function App() {
           >
             <Route index element={<Navigate to="/admin/dashboard" replace />} />
             <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="orders" element={<AdminOrders />} />
             <Route path="products" element={<AdminProducts />} />
             <Route path="categories" element={<AdminCategories />} />
             <Route path="banners" element={<AdminBanners />} />

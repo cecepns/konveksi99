@@ -82,10 +82,9 @@ const Contact = () => {
   const addressLines = settings.company_address 
     ? settings.company_address.split('\n').filter(line => line.trim())
     : [
-        'BSB City, Ruko Jade Square',
-        'Blok A No.12B',
-        'Kota Semarang, Jawa Tengah',
-        '50212'
+        'Jln Desa Penedagandor',
+        'Desa Penedagandor, Kec. Labuhan Haji',
+        'Kab. Lombok Timur, NTB'
       ];
 
   // Parse working hours into lines
@@ -132,28 +131,27 @@ const Contact = () => {
   return (
     <>
       <SEO 
-        title="Contact Us"
-        description="Hubungi kami untuk konsultasi paket internet, informasi pemasangan WiFi, atau kerjasama layanan jaringan di Kawasan Anda."
-        keywords="kontak penyedia jasa wifi, alamat wifi bsb city, telepon wifi semarang, email layanan internet, konsultasi paket wifi"
+        title="Kontak Konveksi 99"
+        description="Hubungi Konveksi 99 untuk konsultasi pesanan seragam, kaos sablon, bordir, dan kebutuhan konveksi lainnya di Lombok Timur."
+        keywords="kontak konveksi 99, konveksi lombok timur, sablon kaos, seragam, penedagandor"
       />
 
       {/* Hero Section */}
-      <section className="bg-primary-600 text-white py-20">
+      <section className="bg-primary-700 text-white py-20">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <h1 
               className="text-2xl lg:text-6xl font-bold mb-6"
               data-aos="fade-up"
             >
-              Hubungi <span className="text-secondary-400">Kami</span>
+              Hubungi <span className="text-secondary-300">Konveksi 99</span>
             </h1>
             <p 
               className="text-xl lg:text-2xl text-gray-200 max-w-4xl mx-auto"
               data-aos="fade-up" 
               data-aos-delay="200"
             >
-              Tim profesional kami siap membantu Anda menemukan solusi internet 
-              yang tepat untuk kebutuhan rumah maupun bisnis Anda.
+              Tim kami siap membantu Anda mulai dari konsultasi desain, pemilihan bahan, hingga proses produksi pesanan konveksi Anda.
             </p>
           </div>
         </div>
@@ -209,11 +207,11 @@ const Contact = () => {
             {/* Contact Form */}
             <div data-aos="fade-right">
               <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-6">
-                Kirim <span className="text-primary-600">Pesan</span>
+                Kirim <span className="text-primary-600">Pesanan / Pertanyaan</span>
               </h2>
               <p className="text-gray-600 mb-8">
-                Isi form di bawah ini untuk mengirim pesan atau pertanyaan Anda. 
-                Tim kami akan merespons dalam waktu 24 jam.
+                Isi form di bawah ini untuk mengirim pertanyaan atau detail kebutuhan konveksi Anda. 
+                Tim kami akan merespons dalam waktu maksimal 24 jam pada hari kerja.
               </p>
 
               {isSubmitted && (
@@ -332,12 +330,12 @@ const Contact = () => {
             {/* Map */}
             <div data-aos="fade-left">
               <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-6">
-                Lokasi <span className="text-primary-600">Kami</span>
+                Lokasi <span className="text-primary-600">Konveksi 99</span>
               </h2>
               <p className="text-gray-600 mb-6">
                 {settings.company_address 
-                  ? `Kunjungi kantor kami di ${settings.company_address.split('\n')[0]}. Kami siap melayani Anda dengan konsultasi langsung.`
-                  : 'Kunjungi kantor kami. Kami siap melayani Anda dengan konsultasi langsung.'}
+                  ? `Kunjungi workshop kami di ${settings.company_address.split('\n')[0]}. Silakan buat janji terlebih dahulu untuk konsultasi langsung.`
+                  : 'Kunjungi workshop kami di Jln Desa Penedagandor, Desa Penedagandor, Kec. Labuhan Haji, Lombok Timur, NTB. Silakan buat janji terlebih dahulu.'}
               </p>
               
               <div className="bg-gray-200 rounded-lg h-80 lg:h-96 relative overflow-hidden">
