@@ -12,8 +12,9 @@ import {
   Phone,
   MapPin,
   FileText,
+  ImagePlus,
 } from 'lucide-react';
-import { ordersAPI } from '../../utils/api';
+import { ordersAPI, getImageUrl } from '../../utils/api';
 import Pagination from '../../components/Common/Pagination';
 
 const defaultOrderForm = {
@@ -55,6 +56,7 @@ const Orders = () => {
   const [progressList, setProgressList] = useState([]);
   const [loadingProgress, setLoadingProgress] = useState(false);
   const [progressForm, setProgressForm] = useState(defaultProgressForm);
+  const [progressImageFiles, setProgressImageFiles] = useState([]);
   const [savingProgress, setSavingProgress] = useState(false);
 
   const fetchOrders = useCallback(async () => {
@@ -156,6 +158,7 @@ const Orders = () => {
     setShowProgressModal(true);
     setLoadingProgress(true);
     setProgressForm(defaultProgressForm);
+    setProgressImageFiles([]);
 
     try {
       const response = await ordersAPI.getByIdAdmin(order.id);
@@ -178,6 +181,7 @@ const Orders = () => {
     setSelectedOrder(null);
     setProgressList([]);
     setProgressForm(defaultProgressForm);
+    setProgressImageFiles([]);
   };
 
   const handleProgressFormChange = (e) => {
@@ -192,17 +196,24 @@ const Orders = () => {
     e.preventDefault();
     if (!selectedOrder) return;
 
-    if (!progressForm.status && !progressForm.description) {
-      alert('Isi minimal status atau deskripsi progress.');
+    if (
+      !progressForm.status &&
+      !progressForm.description &&
+      progressImageFiles.length === 0
+    ) {
+      alert('Isi minimal status, deskripsi, atau pilih satu gambar (opsional).');
       return;
     }
 
     setSavingProgress(true);
     try {
-      const response = await ordersAPI.addProgressAdmin(selectedOrder.id, {
-        status: progressForm.status || undefined,
-        description: progressForm.description || undefined,
-      });
+      const formData = new FormData();
+      if (progressForm.status) formData.append('status', progressForm.status);
+      if (progressForm.description)
+        formData.append('description', progressForm.description);
+      progressImageFiles.forEach((file) => formData.append('images', file));
+
+      const response = await ordersAPI.addProgressAdmin(selectedOrder.id, formData);
 
       const newProgress = response.data?.data;
       if (newProgress) {
@@ -211,6 +222,7 @@ const Orders = () => {
 
       // Kosongkan form setelah berhasil
       setProgressForm(defaultProgressForm);
+      setProgressImageFiles([]);
 
       // Refresh daftar order supaya kolom status ikut terupdate
       await fetchOrders();
@@ -639,6 +651,25 @@ const Orders = () => {
                               {item.description}
                             </p>
                           )}
+                          {Array.isArray(item.images) && item.images.length > 0 && (
+                            <div className="mt-2 flex flex-wrap gap-2">
+                              {item.images.map((src) => (
+                                <a
+                                  key={src}
+                                  href={getImageUrl(src)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="block rounded-md overflow-hidden border border-gray-200 hover:ring-2 hover:ring-primary-400 shrink-0"
+                                >
+                                  <img
+                                    src={getImageUrl(src)}
+                                    alt="Progress"
+                                    className="h-16 w-16 object-cover"
+                                  />
+                                </a>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -686,6 +717,41 @@ const Orders = () => {
                       className="input-field resize-none"
                       placeholder="Tambahkan catatan detail mengenai progres pesanan."
                     />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Lampiran foto (opsional, beberapa file)
+                    </label>
+                    <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg py-6 px-4 cursor-pointer hover:border-primary-400 hover:bg-primary-50/30 transition-colors">
+                      <ImagePlus size={28} className="text-gray-400 mb-2" />
+                      <span className="text-sm text-gray-600 text-center">
+                        Klik atau seret foto ke sini
+                        <span className="block text-xs text-gray-400 mt-1">
+                          JPG, PNG, GIF, WebP · maks. 15 file
+                        </span>
+                      </span>
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/gif,image/webp,.jpg,.jpeg,.png,.gif,.webp"
+                        multiple
+                        className="hidden"
+                        onChange={(e) => {
+                          const list = Array.from(e.target.files || []);
+                          setProgressImageFiles(list);
+                          e.target.value = '';
+                        }}
+                      />
+                    </label>
+                    {progressImageFiles.length > 0 && (
+                      <ul className="mt-2 text-xs text-gray-600 space-y-1">
+                        {progressImageFiles.map((f) => (
+                          <li key={`${f.name}-${f.lastModified}`} className="truncate">
+                            {f.name}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
 
                   <div className="flex justify-end">

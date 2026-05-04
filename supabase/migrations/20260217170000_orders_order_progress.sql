@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS order_progress (
     order_id INT NOT NULL,
     status VARCHAR(50) DEFAULT NULL,
     description TEXT DEFAULT NULL,
+    images TEXT DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
     INDEX idx_order_id (order_id),

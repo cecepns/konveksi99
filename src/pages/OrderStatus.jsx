@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Search, ListChecks, Clock, User, Phone, MapPin, FileText } from 'lucide-react';
 import SEO from '../components/Common/SEO';
-import { ordersAPI } from '../utils/api';
+import { ordersAPI, getImageUrl } from '../utils/api';
 
 const OrderStatus = () => {
   const [identifier, setIdentifier] = useState('');
@@ -211,6 +211,29 @@ const OrderStatus = () => {
                               <p className="text-sm text-gray-700 mt-1 whitespace-pre-line">
                                 {item.description}
                               </p>
+                            )}
+                            {Array.isArray(item.images) && item.images.length > 0 && (
+                              <div className="mt-3 flex flex-wrap gap-2">
+                                {item.images.map((src, idx) => {
+                                  const href = getImageUrl(src);
+                                  return (
+                                    <a
+                                      key={`${item.id}-${idx}-${src}`}
+                                      href={href}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="group block rounded-lg overflow-hidden border border-gray-200 shadow-sm hover:ring-2 hover:ring-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                    >
+                                      <img
+                                        src={href}
+                                        alt={`Lampiran progress ${idx + 1}`}
+                                        className="h-24 w-24 sm:h-28 sm:w-28 object-cover group-hover:opacity-95 transition-opacity"
+                                        loading="lazy"
+                                      />
+                                    </a>
+                                  );
+                                })}
+                              </div>
                             )}
                           </div>
                         </div>

@@ -73,7 +73,8 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   limits: {
-    fileSize: parseInt(process.env.MAX_FILE_SIZE) || 5 * 1024 * 1024 // 5MB default
+    fileSize: parseInt(process.env.MAX_FILE_SIZE) || 5 * 1024 * 1024, // 5MB default per file
+    files: 15
   },
   fileFilter: (req, file, cb) => {
     const allowedTypes = /jpeg|jpg|png|gif|webp/;
@@ -125,6 +126,21 @@ const generateOrderCode = (callback) => {
     const orderCode = `${prefix}${String(nextNumber).padStart(3, '0')}`;
     callback(null, orderCode);
   });
+};
+
+// Parse stored progress images (JSON array in DB — TEXT or JSON column)
+const parseOrderProgressImages = (value) => {
+  if (value == null || value === '') return [];
+  if (Array.isArray(value)) return value.filter(Boolean).map(String);
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? parsed.filter(Boolean).map(String) : [];
+    } catch {
+      return [];
+    }
+  }
+  return [];
 };
 
 // Helper function to generate slug
@@ -888,7 +904,7 @@ app.get('/api/admin/orders/:id', authenticateToken, (req, res) => {
       const order = orderResults[0];
 
       const progressQuery = `
-        SELECT id, status, description, created_at
+        SELECT id, status, description, images, created_at
         FROM order_progress
         WHERE order_id = ?
         ORDER BY created_at ASC, id ASC
@@ -905,11 +921,16 @@ app.get('/api/admin/orders/:id', authenticateToken, (req, res) => {
           return res.status(500).json({ success: false, message: 'Database error' });
         }
 
+        const progress = (progressResults || []).map((row) => ({
+          ...row,
+          images: parseOrderProgressImages(row.images)
+        }));
+
         res.json({
           success: true,
           data: {
             order,
-            progress: progressResults
+            progress
           }
         });
       });
@@ -985,76 +1006,92 @@ app.put('/api/admin/orders/:id', authenticateToken, (req, res) => {
   }
 });
 
-// Add progress entry for an order (Admin only)
-app.post('/api/admin/orders/:id/progress', authenticateToken, (req, res) => {
-  try {
-    const { id } = req.params;
-    const { status, description } = req.body;
+// Add progress entry for an order (Admin only). Optional multiple images: multipart field "images"
+app.post(
+  '/api/admin/orders/:id/progress',
+  authenticateToken,
+  upload.array('images', 15),
+  (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status, description } = req.body;
 
-    if (!status && !description) {
-      return res.status(400).json({
-        success: false,
-        message: 'At least status or description is required'
-      });
-    }
+      const uploadedPaths = (req.files || []).map((f) => `/uploads/${f.filename}`);
+      const imagesJson = uploadedPaths.length > 0 ? JSON.stringify(uploadedPaths) : null;
 
-    const insertProgressQuery = `
-      INSERT INTO order_progress (order_id, status, description)
-      VALUES (?, ?, ?)
+      if (!status && !description && uploadedPaths.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: 'Isi minimal status, deskripsi, atau unggah minimal satu gambar'
+        });
+      }
+
+      const insertProgressQuery = `
+      INSERT INTO order_progress (order_id, status, description, images)
+      VALUES (?, ?, ?, ?)
     `;
 
-    db.query(
-      insertProgressQuery,
-      [id, status || null, description || null],
-      (insertErr, insertResult) => {
-        if (insertErr) {
-          if (insertErr.code === 'ER_NO_SUCH_TABLE') {
-            return res.status(500).json({
-              success: false,
-              message: 'Order progress table not found. Please create orders and order_progress tables in the database.'
-            });
+      db.query(
+        insertProgressQuery,
+        [id, status || null, description || null, imagesJson],
+        (insertErr, insertResult) => {
+          if (insertErr) {
+            if (insertErr.code === 'ER_NO_SUCH_TABLE') {
+              return res.status(500).json({
+                success: false,
+                message: 'Order progress table not found. Please create orders and order_progress tables in the database.'
+              });
+            }
+            if (insertErr.code === 'ER_BAD_FIELD_ERROR') {
+              return res.status(500).json({
+                success: false,
+                message:
+                  'Kolom images belum ada. Jalankan migrasi: supabase/migrations/20260504000000_order_progress_images.sql'
+              });
+            }
+            if (insertErr.code === 'ER_NO_REFERENCED_ROW_2') {
+              return res.status(404).json({ success: false, message: 'Order not found' });
+            }
+            return res.status(500).json({ success: false, message: 'Database error' });
           }
-          if (insertErr.code === 'ER_NO_REFERENCED_ROW_2') {
-            return res.status(404).json({ success: false, message: 'Order not found' });
-          }
-          return res.status(500).json({ success: false, message: 'Database error' });
-        }
 
-        // Optionally update main order status to latest status
-        if (status) {
-          const updateStatusQuery = `
+          if (status) {
+            const updateStatusQuery = `
             UPDATE orders
             SET status = ?, updated_at = CURRENT_TIMESTAMP
             WHERE id = ?
           `;
-          db.query(updateStatusQuery, [status, id], () => {
-            // Ignore errors here, as main insert already succeeded
-          });
-        }
+            db.query(updateStatusQuery, [status, id], () => {});
+          }
 
-        const selectProgressQuery = `
-          SELECT id, status, description, created_at
+          const selectProgressQuery = `
+          SELECT id, status, description, images, created_at
           FROM order_progress
           WHERE id = ?
         `;
 
-        db.query(selectProgressQuery, [insertResult.insertId], (selectErr, selectResults) => {
-          if (selectErr) {
-            return res.status(500).json({ success: false, message: 'Database error' });
-          }
+          db.query(selectProgressQuery, [insertResult.insertId], (selectErr, selectResults) => {
+            if (selectErr) {
+              return res.status(500).json({ success: false, message: 'Database error' });
+            }
 
-          res.status(201).json({
-            success: true,
-            message: 'Order progress added successfully',
-            data: selectResults[0]
+            const row = selectResults[0];
+            res.status(201).json({
+              success: true,
+              message: 'Order progress added successfully',
+              data: {
+                ...row,
+                images: parseOrderProgressImages(row.images)
+              }
+            });
           });
-        });
-      }
-    );
-  } catch (error) {
-    res.status(500).json({ success: false, message: 'Server error' });
+        }
+      );
+    } catch (error) {
+      res.status(500).json({ success: false, message: 'Server error' });
+    }
   }
-});
+);
 
 // Public: get order and progress by order code or numeric ID
 app.get('/api/orders/:identifier/progress', (req, res) => {
@@ -1086,7 +1123,7 @@ app.get('/api/orders/:identifier/progress', (req, res) => {
       const order = orderResults[0];
 
       const progressQuery = `
-        SELECT id, status, description, created_at
+        SELECT id, status, description, images, created_at
         FROM order_progress
         WHERE order_id = ?
         ORDER BY created_at ASC, id ASC
@@ -1103,11 +1140,16 @@ app.get('/api/orders/:identifier/progress', (req, res) => {
           return res.status(500).json({ success: false, message: 'Database error' });
         }
 
+        const progress = (progressResults || []).map((row) => ({
+          ...row,
+          images: parseOrderProgressImages(row.images)
+        }));
+
         res.json({
           success: true,
           data: {
             order,
-            progress: progressResults
+            progress
           }
         });
       });
