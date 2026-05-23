@@ -11,6 +11,7 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
 const fs = require('fs');
+const parseOrderProgressImages = require('./parseOrderProgressImages');
 require('dotenv').config();
 
 const app = express();
@@ -126,21 +127,6 @@ const generateOrderCode = (callback) => {
     const orderCode = `${prefix}${String(nextNumber).padStart(3, '0')}`;
     callback(null, orderCode);
   });
-};
-
-// Parse stored progress images (JSON array in DB — TEXT or JSON column)
-const parseOrderProgressImages = (value) => {
-  if (value == null || value === '') return [];
-  if (Array.isArray(value)) return value.filter(Boolean).map(String);
-  if (typeof value === 'string') {
-    try {
-      const parsed = JSON.parse(value);
-      return Array.isArray(parsed) ? parsed.filter(Boolean).map(String) : [];
-    } catch {
-      return [];
-    }
-  }
-  return [];
 };
 
 // Helper function to generate slug
